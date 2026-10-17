@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuildAI — AI Application Builder Platform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- CodeMirror 5 Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              500: '#06b6d4',
+              600: '#0891b2',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Clean custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); }
+
+    /* CodeMirror adjustments */
+    .CodeMirror {
+      height: 100% !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 12px !important;
+      background: #090a0d !important;
+      color: #f8fafc !important;
+      line-height: 1.6 !important;
+    }
+    .CodeMirror-gutters {
+      background: #0d0e12 !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    .CodeMirror-linenumber {
+      color: #64748b !important;
+      padding: 0 8px 0 4px !important;
+    }
+    .CodeMirror-cursor {
+      border-left: 2px solid #06b6d4 !important;
+    }
+
+    /* Toast Animations */
+    @keyframes toastSlideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes toastFadeOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    .toast-enter {
+      animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .toast-exit {
+      animation: toastFadeOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Diff View Styling */
+    .diff-line-add { background-color: rgba(16, 185, 129, 0.15) !important; color: #a7f3d0 !important; }
+    .diff-line-del { background-color: rgba(244, 63, 94, 0.15) !important; color: #fecdd3 !important; }
+    .diff-line-ctx { color: #94a3b8 !important; }
+    .diff-line-hunk { background-color: rgba(6, 182, 212, 0.12) !important; color: #67e8f9 !important; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-[#0b0c0e] text-neutral-100 min-h-screen font-sans antialiased flex flex-col selection:bg-cyan-500 selection:text-black">
+
+  <!-- ======================================================== -->
+  <!-- 1. DASHBOARD VIEW (Sidebar + Project List + Prompt Hero) -->
+  <!-- ======================================================== -->
+  <div id="dashboardView" class="flex-1 flex overflow-hidden min-h-screen">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 border-r border-white/10 bg-[#0f1013] flex flex-col shrink-0 select-none">
+      <!-- App Header -->
+      <div class="h-14 px-4 border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 text-black font-extrabold flex items-center justify-center text-sm shadow-md">
+            b
+          </div>
+          <span class="font-extrabold text-base tracking-tight text-white">BuildAI</span>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-neutral-400">v1.2</span>
+        </div>
+      </div>
+
+      <!-- New Project CTA -->
+      <div class="p-3 border-b border-white/5">
+        <button onclick="openNewProjectModal()" class="w-full py-2 px-3 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-xs transition flex items-center justify-center gap-2 shadow-sm">
+          <i class="fa-solid fa-plus text-[11px]"></i>
+          <span>New Project</span>
+        </button>
+      </div>
+
+      <!-- Project List Navigation -->
+      <div class="flex-1 overflow-y-auto p-2 space-y-1">
+        <div class="px-2 py-1.5 text-[10px] uppercase font-bold text-neutral-500 tracking-wider">
+          Saved Projects (<span id="sidebarProjectCount">0</span>)
+        </div>
+        <div id="sidebarProjectList" class="space-y-0.5">
+          <div class="p-3 text-center text-xs text-neutral-500">Loading projects...</div>
+        </div>
+      </div>
+
+      <!-- Server & AI Status Card -->
+      <div class="p-3 border-t border-white/10 bg-[#0c0d10] space-y-2">
+        <div id="aiStatusCard" class="p-2.5 rounded-xl border border-white/10 bg-[#14151a] flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span id="aiStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <div>
+              <div id="aiStatusTitle" class="font-semibold text-neutral-200 text-[11px]">AI Checking...</div>
+              <div id="aiStatusSub" class="text-[10px] text-neutral-400">Inspecting .env</div>
+            </div>
+          </div>
+          <button onclick="checkAIStatus(true)" class="text-neutral-400 hover:text-white text-xs p-1" title="Refresh Status">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+
+        <!-- User Plan & Daily Token Quota Meter -->
+        <div id="sidebarQuotaWidget" class="p-2.5 rounded-xl border border-white/10 bg-[#14151a] space-y-2 text-xs">
+          <div class="flex items-center justify-between">
+            <span id="userPlanBadge" class="px-2 py-0.5 rounded-full font-bold text-[9px] tracking-wide uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              FREE PLAN
+            </span>
+            <button onclick="openPlanUpgradeModal()" id="btnUpgradePlan" class="text-[10px] font-semibold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 transition">
+              <i class="fa-solid fa-bolt text-[9px]"></i>
+              <span id="planActionText">Upgrade</span>
+            </button>
+          </div>
+
+          <!-- Quota Progress Bar -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[10px] text-neutral-400 font-mono">
+              <span>Daily AI Limit</span>
+              <span id="quotaGenerationsText" class="text-white font-semibold">0 / 5</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+              <div id="quotaGenerationsBar" class="h-full bg-cyan-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Token Usage & Reset Clock -->
+          <div class="flex items-center justify-between text-[9px] text-neutral-400 font-mono pt-0.5 border-t border-white/5">
+            <span id="quotaTokensText">0 / 100k tok</span>
+            <span id="quotaResetText" title="Daily quota resets at 00:00 UTC"><i class="fa-regular fa-clock mr-1"></i>24h reset</span>
+          </div>
+        </div>
+
+        <!-- User Identity Tag & Account Trigger -->
+        <div class="p-2 rounded-xl bg-black/40 border border-white/5 space-y-1.5 text-xs text-neutral-400">
+          <div class="flex items-center justify-between">
+            <button onclick="openAuthModal()" class="flex items-center gap-1.5 truncate text-left hover:text-white transition group" title="Account settings">
+              <i class="fa-solid fa-user-shield text-cyan-400 text-xs group-hover:scale-110 transition-transform"></i>
+              <span id="userAccountLabel" class="truncate font-mono font-medium text-neutral-200">Developer</span>
+            </button>
+            <button onclick="handleLogout()" id="btnLogout" class="text-[10px] text-neutral-500 hover:text-red-400 px-1 py-0.5 rounded transition" title="Log Out">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+          <div id="migrationAlertBadge" class="hidden cursor-pointer px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 flex items-center justify-between" onclick="openAuthModal('migrate')">
+            <span><i class="fa-solid fa-triangle-exclamation mr-1"></i>Setup Password</span>
+            <i class="fa-solid fa-chevron-right text-[8px]"></i>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      <!-- Top Navigation -->
+      <header class="h-14 border-b border-white/10 bg-[#0f1013]/60 backdrop-blur-md px-8 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-neutral-400 font-medium">Platform Dashboard</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 text-xs text-neutral-400">
+            <i class="fa-solid fa-database text-cyan-400 text-[11px]"></i>
+            <span>SQLite Local Storage: <strong class="text-white">Active</strong></span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-neutral-400">
+            <i class="fa-solid fa-shield-halved text-emerald-400 text-[11px]"></i>
+            <span>Runtime Sandbox: <strong class="text-white">Enforced</strong></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Hero Area -->
+      <div class="max-w-4xl w-full mx-auto px-6 py-10 space-y-10">
+        
+        <!-- Welcome Prompt Section -->
+        <div class="space-y-4 text-center">
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            What do you want to build today?
+          </h1>
+          <p class="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto">
+            Describe your idea. BuildAI generates clean source code, stores files in SQLite, and runs an isolated live preview.
+          </p>
+
+          <!-- Central Prompt Box -->
+          <div class="mt-6 text-left bg-[#14151a] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-2xl transition hover:border-white/20">
+            <div class="mb-3">
+              <label class="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">Project Name (Optional)</label>
+              <input 
+                type="text" 
+                id="heroProjectName" 
+                placeholder="e.g. SaaS Analytics Dashboard" 
+                class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400 transition"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">App Description</label>
+              <textarea 
+                id="heroPromptInput" 
+                rows="3" 
+                placeholder="Describe your app in natural language (e.g. 'Build a customer feedback dashboard with sentiment tags, filter by date, and export CSV button')..." 
+                class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl p-3 text-xs sm:text-sm text-white placeholder-neutral-500 focus:border-cyan-400 resize-none leading-relaxed min-h-[90px]"
+              ></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 mt-1 border-t border-white/5">
+              <div class="text-[11px] text-neutral-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+                <span>Sandboxed in-browser execution with CSP security</span>
+              </div>
+              <button 
+                id="createAndBuildBtn" 
+                onclick="handleCreateFromHero()" 
+                class="px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition flex items-center gap-2 shadow-md active:scale-95 disabled:opacity-50"
+              >
+                <i class="fa-solid fa-wand-magic-sparkles text-cyan-600"></i>
+                <span>Create & Open Project</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Starter Templates Gallery -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-base font-bold text-white">Starter Templates Gallery</h2>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">1-Click Launch</span>
+              </div>
+              <p class="text-xs text-neutral-400">Launch a production-ready application with multi-file structure, responsive layouts, and interactive components.</p>
+            </div>
+            <button onclick="loadTemplates()" class="text-xs text-neutral-400 hover:text-white flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-rotate-right text-[11px]"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <!-- Templates Grid Container -->
+          <div id="starterTemplatesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="p-4 text-center text-xs text-neutral-500 col-span-full">Loading starter templates...</div>
+          </div>
+        </div>
+
+        <!-- Saved Projects Section -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div>
+              <h2 class="text-base font-bold text-white">Your Saved Projects</h2>
+              <p class="text-xs text-neutral-400">Stored persistently in your local SQLite database with version snapshots.</p>
+            </div>
+            <button onclick="loadProjects()" class="text-xs text-neutral-400 hover:text-white flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-rotate-right text-[11px]"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <!-- Projects Grid Container -->
+          <div id="projectsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Populated via loadProjects() in JS -->
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 2. WORKSPACE VIEW (File Explorer + Code Editor + Preview + Logs) -->
+  <!-- ======================================================== -->
+  <div id="workspaceView" class="hidden flex-1 flex flex-col min-h-screen bg-[#0b0c0e]">
+    
+    <!-- Top Workspace Header -->
+    <header class="h-12 border-b border-white/10 bg-[#0f1013] px-4 flex items-center justify-between shrink-0 select-none">
+      <!-- Left: Back to Dashboard & Project Title -->
+      <div class="flex items-center gap-3">
+        <button onclick="exitWorkspaceToDashboard()" class="flex items-center gap-1.5 text-xs font-semibold text-neutral-400 hover:text-white transition px-2.5 py-1 rounded-lg hover:bg-white/5">
+          <i class="fa-solid fa-arrow-left text-[11px]"></i>
+          <span>Projects</span>
+        </button>
+        <div class="h-4 w-[1px] bg-white/10"></div>
+        <div class="flex items-center gap-2">
+          <span id="wsRuntimeStatusDot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+          <span id="wsProjectName" class="font-bold text-xs text-white">Project Title</span>
+          <span id="wsFileCountBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">0 files</span>
+        </div>
+      </div>
+
+      <!-- Center: Runtime Controls (Start, Stop, Restart) -->
+      <div class="flex items-center gap-2 bg-[#14151a] p-1 rounded-xl border border-white/10">
+        <div class="flex items-center gap-1.5 px-2 text-[11px] font-mono">
+          <span class="text-neutral-500">Runtime:</span>
+          <span id="wsRuntimeStatusText" class="font-bold text-slate-400">STOPPED</span>
+        </div>
+        <div class="h-3.5 w-[1px] bg-white/10"></div>
+        <button id="wsStartRuntimeBtn" onclick="handleStartRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-play text-[9px]"></i>
+          <span>Start</span>
+        </button>
+        <button id="wsStopRuntimeBtn" onclick="handleStopRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-stop text-[9px]"></i>
+          <span>Stop</span>
+        </button>
+        <button id="wsRestartRuntimeBtn" onclick="handleRestartRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 flex items-center gap-1.5 transition" title="Restart preview session">
+          <i class="fa-solid fa-rotate-right text-[9px]"></i>
+          <span>Restart</span>
+        </button>
+      </div>
+
+      <!-- Right: Preview Tools & Actions -->
+      <div class="flex items-center gap-2">
+        <button onclick="openProjectHistoryModal()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Project Version History & Restore">
+          <i class="fa-solid fa-code-branch text-[11px] text-cyan-400"></i>
+          <span>History</span>
+          <span id="wsVersionCountBadge" class="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-cyan-300 font-bold">v0</span>
+        </button>
+        <button onclick="downloadProjectZip()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Export Project as ZIP Archive">
+          <i class="fa-solid fa-file-zipper text-[11px] text-amber-400"></i>
+          <span>Export ZIP</span>
+        </button>
+        <button onclick="downloadProjectBundle()" class="px-2.5 py-1 rounded-lg text-xs font-medium text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-download text-[11px]"></i>
+          <span>HTML</span>
+        </button>
+        <button onclick="openShareDeployModal()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Share Embed Code & Deployment Guide">
+          <i class="fa-solid fa-share-nodes text-[11px] text-emerald-400"></i>
+          <span>Share / Deploy</span>
+        </button>
+        <button onclick="openShortcutsModal()" class="px-2 py-1 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1 transition" title="Keyboard Shortcuts (?)">
+          <i class="fa-solid fa-keyboard text-[11px]"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Split Columns -->
+    <div class="flex-1 flex overflow-hidden">
+      
+      <!-- Panel 1: File Explorer & AI Assistant (Left, 320px) -->
+      <div class="w-80 border-r border-white/10 bg-[#0f1013] flex flex-col shrink-0">
+        
+        <!-- File Explorer Section (Top half of left panel) -->
+        <div class="h-1/2 flex flex-col border-b border-white/10">
+          <div class="h-9 px-3.5 border-b border-white/10 flex items-center justify-between text-xs text-neutral-400 bg-[#0c0d10]">
+            <span class="font-semibold text-neutral-300 flex items-center gap-1.5">
+              <i class="fa-regular fa-folder-open text-cyan-400 text-[11px]"></i>
+              File Explorer
+            </span>
+            <button onclick="openNewFileModal()" class="text-neutral-400 hover:text-white text-xs px-2 py-0.5 rounded hover:bg-white/10 flex items-center gap-1" title="Create New File">
+              <i class="fa-solid fa-plus text-[10px]"></i>
+              <span>File</span>
+            </button>
+          </div>
+
+          <!-- File Explorer Tree List -->
+          <div id="wsExplorerList" class="flex-1 overflow-y-auto p-2 space-y-0.5 text-xs select-none">
+            <!-- Populated via renderExplorerList() -->
+          </div>
+        </div>
+
+        <!-- AI Assistant / Chat Section (Bottom half of left panel) -->
+        <div class="h-1/2 flex flex-col bg-[#0f1013]">
+          <div class="h-8 px-3.5 border-b border-white/10 flex items-center justify-between text-xs text-neutral-400 bg-[#0c0d10]">
+            <span class="font-semibold text-neutral-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-robot text-cyan-400 text-[11px]"></i>
+              AI Assistant
+            </span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="openPlanUpgradeModal()" id="wsQuotaPill" class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 transition cursor-pointer" title="Daily AI Generation Quota (Click to view or upgrade)">5/5 left</button>
+              <span id="wsAiBadge" class="text-[10px] font-mono text-neutral-400">Real Stream</span>
+            </div>
+          </div>
+
+          <!-- AI Credentials Missing Warning Banner -->
+          <div id="aiWarningBanner" class="hidden p-2.5 bg-amber-500/10 border-b border-amber-500/20 text-xs text-amber-300 space-y-1">
+            <div class="font-bold flex items-center gap-1.5 text-[11px]">
+              <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+              AI Not Configured
+            </div>
+            <p class="text-[10px] text-amber-200/80 leading-tight">
+              Add <code class="px-1 py-0.5 rounded bg-black/40 text-amber-100 font-mono">GEMINI_API_KEY</code> to <code class="font-mono">.env</code>.
+            </p>
+          </div>
+
+          <!-- Chat Messages History -->
+          <div id="wsChatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
+            <!-- Populated from SQLite messages table -->
+          </div>
+
+          <!-- Chat Input Form -->
+          <div class="p-2.5 border-t border-white/10 bg-[#0c0d10]">
+            <form id="wsChatForm" onsubmit="handleSendChatMessage(event)" class="space-y-1.5">
+              <div class="bg-[#14151a] border border-white/10 rounded-xl p-2 focus-within:border-cyan-400 transition">
+                <textarea 
+                  id="wsChatInput" 
+                  rows="2" 
+                  placeholder="Ask for updates (e.g. 'Add a search bar and customer filter')..." 
+                  class="w-full bg-transparent text-xs text-white placeholder-neutral-500 resize-none leading-relaxed p-0 border-none outline-none focus:outline-none focus:ring-0"
+                ></textarea>
+                <div class="flex items-center justify-between pt-1.5 border-t border-white/5">
+                  <span class="text-[9px] text-neutral-500">Ctrl+Enter</span>
+                  <button 
+                    type="submit" 
+                    id="wsSendBtn" 
+                    class="px-2.5 py-0.5 rounded-lg bg-white hover:bg-neutral-200 text-black font-semibold text-xs transition flex items-center gap-1 disabled:opacity-40"
+                  >
+                    <i class="fa-solid fa-arrow-up text-[9px]"></i>
+                    <span>Send</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Panel 2: Code Editor (Center, 450px) -->
+      <div class="w-[450px] border-r border-white/10 bg-[#0c0d10] flex flex-col shrink-0">
+        <!-- Editor Top Bar with File Tabs -->
+        <div id="wsFilesTabList" class="h-9 px-2 bg-[#0f1013] border-b border-white/10 flex items-center gap-1 overflow-x-auto select-none">
+          <!-- Populated by renderFileTabs() -->
+        </div>
+
+        <!-- Editor Toolbar (Path, Versions, Save) -->
+        <div class="h-8 px-3 border-b border-white/5 flex items-center justify-between text-[11px] text-neutral-400 bg-[#090a0d]">
+          <div class="flex items-center gap-2 truncate">
+            <span id="currentEditingPath" class="font-mono text-cyan-300 font-semibold truncate">index.html</span>
+            <span id="unsavedIndicator" class="hidden text-amber-400 text-[10px] font-bold">● Unsaved edits</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openVersionHistoryModal()" class="text-neutral-400 hover:text-white px-2 py-0.5 rounded hover:bg-white/10 flex items-center gap-1 transition" title="Inspect prior versions">
+              <i class="fa-solid fa-clock-rotate-left text-[10px]"></i>
+              <span>Revisions</span>
+            </button>
+            <button id="saveFileBtn" onclick="saveActiveFileContent()" class="px-2.5 py-0.5 rounded bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-[11px] flex items-center gap-1 transition">
+              <i class="fa-regular fa-floppy-disk text-[10px]"></i>
+              <span>Save</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Code Editor Body -->
+        <div class="flex-1 relative overflow-hidden bg-[#090a0d] flex flex-col">
+          <textarea 
+            id="wsCodeEditor" 
+            spellcheck="false" 
+            class="flex-1 w-full bg-[#090a0d] p-3 font-mono text-xs text-neutral-200 leading-relaxed resize-none border-none outline-none focus:outline-none focus:ring-0 select-text"
+            placeholder="Select or create a file to view and edit code..."
+          ></textarea>
+        </div>
+
+        <!-- Editor Footer Status -->
+        <div class="h-6 px-3 bg-[#0d0e12] border-t border-white/10 flex items-center justify-between text-[10px] text-neutral-500 font-mono select-none">
+          <span id="editorFileInfo">UTF-8 • Editable</span>
+          <span id="editorCursorInfo">Ln 1, Col 1</span>
+        </div>
+      </div>
+
+      <!-- Panel 3: Live Preview & Console / Logs (Right, Flexible) -->
+      <div class="flex-1 flex flex-col bg-[#090a0d] overflow-hidden">
+        
+        <!-- Top Switcher Bar: Preview vs Console vs AI Debugger Tabs + Viewports -->
+        <div class="h-9 border-b border-white/10 bg-[#0f1013] px-3 flex items-center justify-between shrink-0 select-none">
+          <!-- View Tabs (Preview vs Console vs AI Debugger) -->
+          <div class="flex items-center gap-1 bg-[#14151a] p-0.5 rounded-lg border border-white/10 text-xs">
+            <button onclick="switchWorkspaceRightTab('preview')" id="tabPreviewBtn" class="px-2.5 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-play text-[9px] text-emerald-400"></i>
+              <span>Live Preview</span>
+            </button>
+            <button onclick="switchWorkspaceRightTab('console')" id="tabConsoleBtn" class="px-2.5 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-terminal text-[9px] text-cyan-400"></i>
+              <span>Console & Logs</span>
+              <span id="logCountPill" class="text-[9px] font-mono px-1 rounded-full bg-white/10 text-neutral-300">0</span>
+            </button>
+            <button onclick="switchWorkspaceRightTab('debugger')" id="tabDebuggerBtn" class="px-2.5 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition relative">
+              <i class="fa-solid fa-wand-magic-sparkles text-[9px] text-amber-400"></i>
+              <span>AI Debugger</span>
+              <span id="diagAlertPill" class="hidden w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
+            </button>
+          </div>
+
+          <!-- Viewport switchers (only visible in Preview tab) -->
+          <div id="previewViewportControls" class="flex items-center gap-1 bg-[#14151a] p-0.5 rounded-lg border border-white/10 text-xs">
+            <button onclick="setPreviewViewport('desktop')" id="vpDeskBtn" class="p-1 px-2 rounded font-semibold bg-white/15 text-white" title="Desktop View">
+              <i class="fa-solid fa-desktop text-[10px]"></i>
+            </button>
+            <button onclick="setPreviewViewport('tablet')" id="vpTabBtn" class="p-1 px-2 rounded font-semibold text-neutral-400 hover:text-white" title="Tablet View (768px)">
+              <i class="fa-solid fa-tablet-screen-button text-[10px]"></i>
+            </button>
+            <button onclick="setPreviewViewport('mobile')" id="vpMobBtn" class="p-1 px-2 rounded font-semibold text-neutral-400 hover:text-white" title="Mobile View (375px)">
+              <i class="fa-solid fa-mobile-screen text-[10px]"></i>
+            </button>
+          </div>
+
+          <!-- Console actions (only visible in Console tab) -->
+          <div id="consoleActionControls" class="hidden flex items-center gap-2">
+            <button onclick="clearRuntimeLogs()" class="text-neutral-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
+              <i class="fa-solid fa-trash-can text-[10px]"></i>
+              <span>Clear</span>
+            </button>
+            <button onclick="fetchRuntimeLogs()" class="text-neutral-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
+              <i class="fa-solid fa-rotate-right text-[10px]"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <!-- Debugger actions (only visible in Debugger tab) -->
+          <div id="debuggerActionControls" class="hidden flex items-center gap-2">
+            <button onclick="fetchDiagnostics()" class="text-neutral-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
+              <i class="fa-solid fa-rotate-right text-[10px]"></i>
+              <span>Refresh Errors</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Build Error Alert Banner (Shown if runtime fails) -->
+        <div id="runtimeErrorBanner" class="hidden p-3 bg-red-500/10 border-b border-red-500/20 text-xs text-red-300 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation text-red-400 text-sm"></i>
+            <div>
+              <div class="font-bold">Build or Runtime Failure</div>
+              <div id="runtimeErrorMessage" class="text-[11px] text-red-200/80">Application failed health check.</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openDebuggerWithActiveError()" class="px-3 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-xs border border-amber-500/30 flex items-center gap-1.5 transition shadow-sm">
+              <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
+              <span>Debug with AI</span>
+            </button>
+            <button onclick="handleRestartRuntime()" class="px-3 py-1 rounded bg-red-500/20 hover:bg-red-500/30 text-white font-semibold text-xs border border-red-500/30 transition">
+              Retry Build
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-View 1: Preview Frame Container -->
+        <div id="previewFrameContainer" class="flex-1 p-4 overflow-auto flex items-center justify-center relative bg-[#060709]">
+          
+          <!-- Generating / Loading Overlay -->
+          <div id="wsGeneratingOverlay" class="hidden absolute inset-0 bg-[#090a0d]/90 backdrop-blur-xs flex flex-col items-center justify-center z-20">
+            <div class="w-12 h-12 rounded-2xl bg-[#14151a] border border-white/20 flex items-center justify-center mb-4 shadow-xl">
+              <i class="fa-solid fa-spinner fa-spin text-cyan-400 text-lg"></i>
+            </div>
+            <h4 class="text-sm font-bold text-white mb-1" id="wsGeneratingTitle">Synthesizing application...</h4>
+            <p class="text-xs text-neutral-400 font-mono" id="wsGeneratingDetails">Streaming code from AI model</p>
+          </div>
+
+          <!-- Runtime Stopped Placeholder -->
+          <div id="runtimeStoppedPlaceholder" class="hidden absolute inset-0 bg-[#090a0d] flex flex-col items-center justify-center z-10 text-center p-6">
+            <div class="w-14 h-14 rounded-2xl bg-[#14151a] border border-white/10 flex items-center justify-center text-neutral-400 mb-3 shadow-md">
+              <i class="fa-solid fa-power-off text-xl"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-1">Preview Session Stopped</h3>
+            <p class="text-xs text-neutral-400 max-w-sm mb-4 leading-relaxed">
+              The preview runtime is currently stopped to save memory. Click Start to compile and launch the application in an isolated sandbox.
+            </p>
+            <button onclick="handleStartRuntime()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs flex items-center gap-2 shadow-lg transition">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>Start Preview</span>
+            </button>
+          </div>
+
+          <!-- Sandboxed Iframe (Execution Security Enforced with CSP and no-allow-same-origin) -->
+          <iframe 
+            id="wsPreviewIframe" 
+            sandbox="allow-scripts allow-forms allow-modals"
+            class="w-full h-full bg-white border border-white/10 shadow-2xl transition-all duration-300"
+          ></iframe>
+        </div>
+
+        <!-- Sub-View 2: Runtime Console & Logs Panel -->
+        <div id="runtimeConsoleContainer" class="hidden flex-1 flex flex-col bg-[#07080a] font-mono text-xs overflow-hidden">
+          <div class="p-2 border-b border-white/10 bg-[#0d0e12] flex items-center justify-between text-[11px] text-neutral-400">
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-shield-halved text-cyan-400 text-[10px]"></i>
+              <span>Isolated Runtime Logs (Container / Sandbox Output)</span>
+            </span>
+            <span class="text-[10px] text-neutral-500">Live stdout/stderr stream</span>
+          </div>
+          <div id="wsConsoleLogs" class="flex-1 p-3 overflow-y-auto space-y-1 leading-relaxed">
+            <div class="text-neutral-500 italic">No logs recorded yet. Start preview to view build events and console output.</div>
+          </div>
+        </div>
+
+        <!-- Sub-View 3: AI Debugger & Auto-Repair Panel -->
+        <div id="runtimeDebuggerContainer" class="hidden flex-1 flex flex-col bg-[#07080a] text-xs overflow-hidden">
+          <!-- Debugger Header -->
+          <div class="p-3 border-b border-white/10 bg-[#0d0e12] flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs shadow-sm">
+                <i class="fa-solid fa-bug"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-xs">AI Debugging & Automatic Repair Agent</h3>
+                <p class="text-[10px] text-neutral-400">Targeted error diagnosis, non-destructive patch generation, and isolated retesting.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="dbgAttemptsBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-neutral-300">Attempts: 0/3</span>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            
+            <!-- Active Error / Diagnostic Card -->
+            <div class="bg-[#121318] border border-white/10 rounded-xl p-3.5 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span id="dbgErrorTypeBadge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/30">RUNTIME_ERROR</span>
+                  <span id="dbgFileContext" class="font-mono text-[11px] text-cyan-300">app.js:1</span>
+                </div>
+                <span id="dbgErrorTime" class="text-[10px] text-neutral-500 font-mono">Just now</span>
+              </div>
+              <div id="dbgErrorMessage" class="p-2.5 rounded-lg bg-[#090a0d] border border-white/5 font-mono text-[11px] text-red-300 whitespace-pre-wrap leading-relaxed select-text">
+                No active errors detected in this project.
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-[10px] text-neutral-500">Telemetry collected from sandboxed preview</span>
+                <button id="btnTriggerDiagnosis" onclick="triggerAIDiagnosis()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs flex items-center gap-1.5 shadow transition disabled:opacity-50">
+                  <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
+                  <span>Diagnose & Propose Fix</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Analyzing / Diagnosing Indicator -->
+            <div id="dbgAnalyzingIndicator" class="hidden p-6 text-center space-y-2.5 bg-[#121318]/50 border border-amber-500/20 rounded-xl">
+              <div class="w-8 h-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin mx-auto"></div>
+              <div class="font-bold text-white text-xs">AI Agent Analyzing Error Context...</div>
+              <p class="text-[11px] text-neutral-400 font-mono">Examining source files & stack trace to synthesize a safe, targeted patch.</p>
+            </div>
+
+            <!-- AI Diagnosis & Proposed Patch Card (Shown after diagnosis) -->
+            <div id="dbgProposalCard" class="hidden bg-[#121318] border border-amber-500/30 rounded-xl p-4 space-y-3.5 shadow-xl">
+              <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-stethoscope text-amber-400"></i>
+                  <span class="font-bold text-white text-xs">AI Diagnosis & Root Cause</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">READY FOR REVIEW</span>
+              </div>
+
+              <!-- Diagnosis Summary -->
+              <div class="space-y-1">
+                <h4 class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Diagnosis</h4>
+                <p id="dbgDiagnosisText" class="text-xs text-neutral-200 leading-relaxed bg-[#0c0d10] p-2.5 rounded-lg border border-white/5">
+                  Diagnosis details...
+                </p>
+              </div>
+
+              <!-- Root Cause -->
+              <div class="space-y-1">
+                <h4 class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Root Cause & Location</h4>
+                <p id="dbgRootCauseText" class="text-xs text-neutral-300 font-mono bg-[#0c0d10] p-2 rounded-lg border border-white/5">
+                  File and line...
+                </p>
+              </div>
+
+              <!-- Rationale -->
+              <div class="space-y-1">
+                <h4 class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Repair Rationale</h4>
+                <p id="dbgReasoningText" class="text-xs text-neutral-400 leading-relaxed bg-[#0c0d10] p-2.5 rounded-lg border border-white/5">
+                  Explanation...
+                </p>
+              </div>
+
+              <!-- Proposed Patch (Diff View) -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <h4 class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Proposed Patch</h4>
+                    <span id="dbgDiffSummary" class="text-[10px] font-mono text-cyan-300 font-semibold px-1.5 py-0.2 rounded bg-cyan-950/40 border border-cyan-500/20">+0 / -0 lines</span>
+                  </div>
+                  <!-- Split vs Unified View Switcher -->
+                  <div class="flex items-center bg-[#101115] p-0.5 rounded-lg border border-white/10 text-[10px] font-semibold">
+                    <button id="btnDiffSplit" onclick="setDiffMode('split')" class="px-2 py-0.5 rounded text-white bg-white/10 transition flex items-center gap-1">
+                      <i class="fa-solid fa-table-columns text-[9px]"></i>
+                      <span>Split</span>
+                    </button>
+                    <button id="btnDiffUnified" onclick="setDiffMode('unified')" class="px-2 py-0.5 rounded text-neutral-400 hover:text-white transition flex items-center gap-1">
+                      <i class="fa-solid fa-bars text-[9px]"></i>
+                      <span>Unified</span>
+                    </button>
+                  </div>
+                </div>
+                <div id="dbgDiffViewer" class="bg-[#08090b] border border-white/10 rounded-lg font-mono text-[11px] overflow-hidden leading-relaxed select-text max-h-72 flex flex-col">
+                  <!-- Diff lines populated via renderDiffViewer() -->
+                </div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                <button onclick="handleRejectProposal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white hover:bg-white/5 transition">
+                  Reject Fix
+                </button>
+                <button id="btnApplyRepair" onclick="handleApplyRepair()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs flex items-center gap-1.5 shadow-lg transition">
+                  <i class="fa-solid fa-check text-[11px]"></i>
+                  <span>Apply Fix & Retest</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Retest Outcome Banner -->
+            <div id="dbgRetestBanner" class="hidden p-3.5 rounded-xl border space-y-1.5">
+              <!-- Dynamically populated with retest outcome -->
+            </div>
+
+            <!-- Safety Checkpoints & Rollback History -->
+            <div class="border-t border-white/10 pt-3 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-neutral-400 uppercase tracking-wider text-[10px]">Safety Checkpoints (Rollback)</span>
+                <button onclick="loadCheckpointsList()" class="text-neutral-500 hover:text-white text-[11px]" title="Refresh Checkpoints">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
+              <div id="dbgCheckpointsList" class="space-y-1 text-xs">
+                <!-- Checkpoints populated dynamically -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 3. MODALS -->
+  <!-- ======================================================== -->
+
+  <!-- Modal A: New Project Modal -->
+  <div id="newProjectModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-neutral-100">
+      <button onclick="closeNewProjectModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 text-black font-extrabold flex items-center justify-center text-sm shadow-md">
+          b
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white">Create New Project</h3>
+          <p class="text-[11px] text-neutral-400">Stored in persistent SQLite database.</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-neutral-300 mb-1">Project Name *</label>
+          <input 
+            type="text" 
+            id="modalProjectName" 
+            placeholder="e.g. Modern Landing Page" 
+            class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-neutral-300 mb-1">Initial Prompt (Optional)</label>
+          <textarea 
+            id="modalProjectPrompt" 
+            rows="3" 
+            placeholder="What should this application do?" 
+            class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-neutral-500 focus:border-cyan-400 resize-none"
+          ></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button onclick="closeNewProjectModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white">
+            Cancel
+          </button>
+          <button onclick="handleCreateProjectFromModal()" class="px-5 py-2 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition">
+            Create Project
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal B: New File Modal -->
+  <div id="newFileModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-sm w-full p-5 shadow-2xl relative text-neutral-100">
+      <button onclick="closeNewFileModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-3">
+        <i class="fa-regular fa-file-code text-cyan-400 text-base"></i>
+        <h3 class="text-sm font-bold text-white">Create New File</h3>
+      </div>
+      <p class="text-[11px] text-neutral-400 mb-4">
+        Allowed extensions: <code class="font-mono text-cyan-300">.html, .css, .js, .json, .md, .svg</code>
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-neutral-300 mb-1">File Path / Name *</label>
+          <input 
+            type="text" 
+            id="modalFilePathInput" 
+            placeholder="e.g. styles.css or components/card.js" 
+            class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400 font-mono"
+          />
+          <div id="filePathValidationError" class="hidden mt-1 text-[10px] text-red-400"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button onclick="closeNewFileModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white">
+            Cancel
+          </button>
+          <button onclick="handleConfirmCreateFile()" class="px-4 py-1.5 rounded-lg bg-white hover:bg-neutral-200 text-black font-bold text-xs transition">
+            Create File
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal C: Version History / Revisions Modal -->
+  <div id="versionHistoryModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-lg w-full p-5 shadow-2xl relative text-neutral-100 flex flex-col max-h-[80vh]">
+      <button onclick="closeVersionHistoryModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-2">
+        <i class="fa-solid fa-clock-rotate-left text-cyan-400 text-base"></i>
+        <div>
+          <h3 class="text-sm font-bold text-white">Version History</h3>
+          <p class="text-[11px] text-neutral-400 font-mono" id="versionModalFilePath">index.html</p>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto my-3 border border-white/10 rounded-xl divide-y divide-white/5 bg-[#0c0d10]" id="versionHistoryList">
+        <!-- Populated via renderVersionHistory() -->
+      </div>
+
+      <div class="flex items-center justify-between pt-2 text-[11px] text-neutral-400">
+        <span>Snapshots are recorded automatically on every save.</span>
+        <button onclick="closeVersionHistoryModal()" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal D: Project Version History & Restore Modal -->
+  <div id="projectHistoryModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative text-neutral-100 flex flex-col max-h-[85vh]">
+      <button onclick="closeProjectHistoryModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-code-branch text-sm"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>Project Version History</span>
+              <span id="projHistCount" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">0 versions</span>
+            </h3>
+            <p class="text-[11px] text-neutral-400">Track meaningful changes, restore prior states atomically, and inspect Git commit history.</p>
+          </div>
+        </div>
+        <button onclick="openCreateVersionPrompt()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-xs transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span>Save Version</span>
+        </button>
+      </div>
+
+      <!-- Quick Version Creation Input (Collapsible) -->
+      <div id="createVersionBox" class="hidden mt-3 p-3 rounded-xl bg-[#0c0d10] border border-cyan-500/30 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-cyan-300">Commit New Project Snapshot</span>
+          <button onclick="toggleCreateVersionBox(false)" class="text-neutral-500 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <input 
+          type="text" 
+          id="customVersionSummary" 
+          placeholder="Version summary (e.g. Added responsive navbar and cart modal)..." 
+          class="w-full bg-[#14151a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-cyan-400"
+        />
+        <div class="flex items-center justify-end gap-2">
+          <button onclick="toggleCreateVersionBox(false)" class="px-3 py-1 rounded text-xs text-neutral-400 hover:text-white">Cancel</button>
+          <button onclick="submitManualVersion()" class="px-3 py-1 rounded bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs flex items-center gap-1">
+            <i class="fa-solid fa-check text-[10px]"></i>
+            <span>Commit Snapshot</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Version List Container -->
+      <div class="flex-1 overflow-y-auto my-3 border border-white/10 rounded-xl divide-y divide-white/5 bg-[#090a0d] p-1" id="projectVersionList">
+        <div class="p-6 text-center text-xs text-neutral-500">Loading version history...</div>
+      </div>
+
+      <!-- Footer Info & Actions -->
+      <div class="flex items-center justify-between pt-2 border-t border-white/5 text-[11px] text-neutral-400">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+          <span>Restores create a safety checkpoint before reverting files.</span>
+        </div>
+        <button onclick="closeProjectHistoryModal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal E: Authentication Modal (Login / Register / Migration) -->
+  <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-neutral-100 flex flex-col">
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-black font-extrabold flex items-center justify-center text-sm shadow-md">
+          b
+        </div>
+        <div>
+          <h3 id="authModalTitle" class="text-sm font-bold text-white">Account Authentication</h3>
+          <p id="authModalSub" class="text-[11px] text-neutral-400">Secure Argon2id Authentication</p>
+        </div>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="flex border-b border-white/10 mb-4 text-xs">
+        <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 border-b-2 border-cyan-400 text-white font-bold transition">
+          Log In
+        </button>
+        <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 border-b-2 border-transparent text-neutral-400 hover:text-white font-medium transition">
+          Register
+        </button>
+        <button id="authTabMigrate" onclick="switchAuthTab('migrate')" class="hidden flex-1 pb-2 border-b-2 border-transparent text-amber-400 hover:text-amber-300 font-medium transition">
+          Set Password
+        </button>
+      </div>
+
+      <!-- Auth Error Banner -->
+      <div id="authErrorBanner" class="hidden mb-3 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-[11px] text-red-300 flex items-start gap-2">
+        <i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0"></i>
+        <span id="authErrorMessage"></span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="authLoginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Username or Email</label>
+          <input type="text" id="loginIdentifier" required placeholder="Enter username or email" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Password</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition shadow-md">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="authRegisterForm" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Username</label>
+          <input type="text" id="regUsername" required placeholder="e.g. alex_dev" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Email (Optional)</label>
+          <input type="email" id="regEmail" placeholder="alex@company.com" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Password</label>
+          <input type="password" id="regPassword" required placeholder="Min 8 chars, 1 letter, 1 number" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <button type="submit" id="btnRegSubmit" class="w-full py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition shadow-md">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Migration Form (Set Password) -->
+      <form id="authMigrateForm" onsubmit="handleMigrateSubmit(event)" class="hidden space-y-3">
+        <p class="text-[11px] text-amber-300/90 leading-relaxed">
+          Your account was created without a password. Protect your account with an Argon2id password hash before public deployment.
+        </p>
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">New Password</label>
+          <input type="password" id="migratePassword" required placeholder="Min 8 chars, 1 letter, 1 number" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Confirm New Password</label>
+          <input type="password" id="migrateConfirmPassword" required placeholder="••••••••" class="w-full bg-[#0b0c0e] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:border-cyan-400" />
+        </div>
+        <button type="submit" id="btnMigrateSubmit" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition shadow-md">
+          Save & Lock In Password
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal F: Plan Tiers, Quota & Token Usage Metering Modal -->
+  <div id="planUpgradeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative text-neutral-100 flex flex-col max-h-[90vh]">
+      <button onclick="closePlanUpgradeModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-600 text-black font-extrabold flex items-center justify-center text-lg shadow-md shrink-0">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            AI Quotas & Plan Tiers
+            <span id="modalCurrentTierBadge" class="px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">Free Plan</span>
+          </h3>
+          <p class="text-xs text-neutral-400">Manage LLM daily generation allowances, token budgets, and view live usage telemetry.</p>
+        </div>
+      </div>
+
+      <!-- Real-time Quota Stats Banner -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 p-3 rounded-xl bg-[#090a0d] border border-white/5 text-xs font-mono">
+        <div class="space-y-0.5">
+          <div class="text-[10px] text-neutral-500 uppercase">Generations</div>
+          <div id="mStatsGenerations" class="font-bold text-white text-sm">0 / 5</div>
+          <div id="mStatsGenerationsRem" class="text-[9px] text-cyan-400">5 remaining</div>
+        </div>
+        <div class="space-y-0.5">
+          <div class="text-[10px] text-neutral-500 uppercase">Chat Edits</div>
+          <div id="mStatsEdits" class="font-bold text-white text-sm">0 / 20</div>
+          <div id="mStatsEditsRem" class="text-[9px] text-emerald-400">20 remaining</div>
+        </div>
+        <div class="space-y-0.5">
+          <div class="text-[10px] text-neutral-500 uppercase">Auto-Repairs</div>
+          <div id="mStatsRepairs" class="font-bold text-white text-sm">0 / 10</div>
+          <div id="mStatsRepairsRem" class="text-[9px] text-purple-400">10 remaining</div>
+        </div>
+        <div class="space-y-0.5">
+          <div class="text-[10px] text-neutral-500 uppercase">Tokens Used</div>
+          <div id="mStatsTokens" class="font-bold text-white text-sm">0</div>
+          <div id="mStatsResetTime" class="text-[9px] text-amber-300"><i class="fa-regular fa-clock mr-1"></i>Resets 00:00 UTC</div>
+        </div>
+      </div>
+
+      <!-- Plan Comparison Cards (Free vs Pro) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 overflow-y-auto pr-1">
+        <!-- Free Tier Card -->
+        <div id="cardTierFree" class="p-4 rounded-xl border border-white/10 bg-[#0f1013] flex flex-col justify-between space-y-3 relative">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">Free Starter</span>
+              <span id="badgeFreeActive" class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white/10 text-neutral-300">Active</span>
+            </div>
+            <div class="text-xl font-extrabold text-white">$0 <span class="text-xs text-neutral-500 font-normal">/ forever</span></div>
+            <p class="text-[11px] text-neutral-400">Ideal for personal experimentation, learning, and lightweight prototyping.</p>
+            <ul class="text-xs text-neutral-300 space-y-1.5 pt-2 border-t border-white/5">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span><strong>5</strong> AI Generations per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span><strong>20</strong> Chat updates per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span><strong>10</strong> Automated repairs per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span><strong>100,000</strong> Tokens daily budget</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span>SQLite & Git Versioning</span></li>
+            </ul>
+          </div>
+          <button id="btnSwitchFree" onclick="handleSwitchPlan('free')" class="w-full py-2 rounded-xl text-xs font-bold transition border border-white/10 bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10">
+            Switch to Free
+          </button>
+        </div>
+
+        <!-- Pro Developer Card -->
+        <div id="cardTierPro" class="p-4 rounded-xl border border-cyan-500/40 bg-gradient-to-b from-cyan-950/20 to-[#0f1013] flex flex-col justify-between space-y-3 relative shadow-lg shadow-cyan-950/20">
+          <div class="absolute -top-2.5 right-4 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-blue-500 text-black shadow">
+            RECOMMENDED
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">Pro Developer</span>
+              <span id="badgeProActive" class="hidden px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Active</span>
+            </div>
+            <div class="text-xl font-extrabold text-cyan-300">Free Upgrade <span class="text-xs text-neutral-500 font-normal">(Instant)</span></div>
+            <p class="text-[11px] text-neutral-400">High-volume generative coding, deep auto-repair passes, and large codebases.</p>
+            <ul class="text-xs text-neutral-200 space-y-1.5 pt-2 border-t border-white/5">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400 text-[10px]"></i><span><strong>100</strong> AI Generations per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400 text-[10px]"></i><span><strong>500</strong> Chat updates per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400 text-[10px]"></i><span><strong>200</strong> Automated repairs per day</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400 text-[10px]"></i><span><strong>2,000,000</strong> Tokens daily budget</span></li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i><span>Priority synthesis queue</span></li>
+            </ul>
+          </div>
+          <button id="btnSwitchPro" onclick="handleSwitchPlan('pro')" class="w-full py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black shadow-md flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-bolt text-[11px]"></i>
+            <span>Upgrade to Pro Developer</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Expandable Usage History Logs -->
+      <div class="border-t border-white/10 pt-3">
+        <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleUsageLogsDrawer()">
+          <span class="text-xs font-semibold text-neutral-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-line text-cyan-400 text-[11px]"></i>
+            Recent AI Usage Telemetry
+          </span>
+          <div class="flex items-center gap-2 text-neutral-400 text-xs">
+            <span id="usageLogsCount" class="text-[10px] font-mono">0 requests</span>
+            <i id="usageLogsChevron" class="fa-solid fa-chevron-down text-[10px] transition-transform"></i>
+          </div>
+        </div>
+
+        <div id="usageLogsDrawer" class="hidden mt-2 max-h-40 overflow-y-auto rounded-xl border border-white/10 bg-[#090a0d] p-2 divide-y divide-white/5 font-mono text-[10px]">
+          <div class="p-2 text-center text-neutral-500">Loading usage history...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: SHARE & DEPLOY -->
+  <!-- ======================================================== -->
+  <div id="shareDeployModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative text-neutral-100 flex flex-col max-h-[90vh]">
+      <button onclick="closeShareDeployModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3 pb-4 border-b border-white/10">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 text-black font-extrabold flex items-center justify-center text-sm shadow-md">
+          <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>Share & Deploy Project</span>
+            <span id="shareModalProjectBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">App</span>
+          </h3>
+          <p class="text-[11px] text-neutral-400">Embed this app in your website or deploy it to Vercel, Netlify, or GitHub Pages in minutes.</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex items-center gap-2 border-b border-white/10 pt-3 pb-2 text-xs font-semibold">
+        <button id="btnTabShareEmbed" onclick="switchShareTab('embed')" class="px-3 py-1.5 rounded-lg bg-white/10 text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-code text-cyan-400 text-[11px]"></i>
+          <span>Embed & Link</span>
+        </button>
+        <button id="btnTabShareDeploy" onclick="switchShareTab('deploy')" class="px-3 py-1.5 rounded-lg text-neutral-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-rocket text-purple-400 text-[11px]"></i>
+          <span>Deploy Guides</span>
+        </button>
+        <button id="btnTabShareExport" onclick="switchShareTab('export')" class="px-3 py-1.5 rounded-lg text-neutral-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-download text-emerald-400 text-[11px]"></i>
+          <span>Direct Exports</span>
+        </button>
+      </div>
+
+      <!-- Content Area -->
+      <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1 text-xs">
+        
+        <!-- Tab 1: Embed & Link -->
+        <div id="paneShareEmbed" class="space-y-4">
+          <!-- Live Preview URL -->
+          <div class="space-y-1.5">
+            <label class="block text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Live Preview URL</label>
+            <div class="flex items-center gap-2">
+              <input id="sharePreviewUrlInput" type="text" readonly class="flex-1 bg-[#090a0d] border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300 select-all" />
+              <button onclick="copyShareUrl()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs flex items-center gap-1.5 transition">
+                <i class="fa-regular fa-copy text-[11px]"></i>
+                <span id="copyUrlBtnText">Copy</span>
+              </button>
+              <button onclick="openExternalPreview()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                <span>Open</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- HTML Iframe Embed Snippet -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-[11px] font-bold text-neutral-300 uppercase tracking-wider">HTML Iframe Embed Snippet</label>
+              <button onclick="copyEmbedSnippet()" class="text-[10px] text-cyan-400 hover:underline flex items-center gap-1">
+                <i class="fa-regular fa-copy text-[10px]"></i>
+                <span id="copySnippetBtnText">Copy Embed Code</span>
+              </button>
+            </div>
+            <pre id="shareEmbedSnippet" class="p-3 bg-[#090a0d] border border-white/10 rounded-xl font-mono text-[11px] text-neutral-300 overflow-x-auto whitespace-pre-wrap select-all leading-relaxed"></pre>
+          </div>
+
+          <!-- Security Notice -->
+          <div class="p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/20 text-cyan-200/90 text-[11px] flex items-start gap-2.5">
+            <i class="fa-solid fa-shield-halved text-cyan-400 mt-0.5 shrink-0"></i>
+            <div>
+              <span class="font-bold">Sandboxed by default:</span> Embed frames use <code class="font-mono bg-black/40 px-1 py-0.5 rounded text-cyan-300">sandbox="allow-scripts allow-forms"</code> with Restrictive CSP preventing unauthorized access to host origins and credentials.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Deploy Guides -->
+        <div id="paneShareDeploy" class="hidden space-y-3.5">
+          <!-- Vercel Guide -->
+          <div class="p-3.5 rounded-xl border border-white/10 bg-[#0f1013] space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-black border border-white/20 flex items-center justify-center text-white text-[10px] font-bold">▲</div>
+                <span class="font-bold text-white text-xs">Vercel Deployment</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-neutral-300">Fastest</span>
+            </div>
+            <p class="text-[11px] text-neutral-400">Download the ZIP archive, extract the files, and run in your terminal:</p>
+            <div class="p-2 bg-[#090a0d] rounded-lg border border-white/10 font-mono text-[11px] text-neutral-300 flex items-center justify-between">
+              <code>npx vercel deploy --prod</code>
+              <button onclick="copyCommand('npx vercel deploy --prod')" class="text-neutral-400 hover:text-white px-1.5 py-0.5 text-[10px]">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Netlify Guide -->
+          <div class="p-3.5 rounded-xl border border-white/10 bg-[#0f1013] space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-[10px] font-bold">N</div>
+                <span class="font-bold text-white text-xs">Netlify Drop (Zero Setup)</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">No CLI</span>
+            </div>
+            <p class="text-[11px] text-neutral-400">1. Click <strong>Export ZIP</strong> to download your project archive.<br/>2. Open <a href="https://app.netlify.com/drop" target="_blank" class="text-cyan-400 underline">app.netlify.com/drop</a>.<br/>3. Drag and drop your unzipped folder for instant global HTTPS hosting.</p>
+          </div>
+
+          <!-- GitHub Pages Guide -->
+          <div class="p-3.5 rounded-xl border border-white/10 bg-[#0f1013] space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i class="fa-brands fa-github text-white text-base"></i>
+                <span class="font-bold text-white text-xs">GitHub Pages</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-neutral-300">Free</span>
+            </div>
+            <p class="text-[11px] text-neutral-400">Push to a repository, go to <strong>Settings &gt; Pages</strong>, and select the <code class="font-mono bg-black/40 px-1 rounded text-cyan-300">main / root</code> branch as your source.</p>
+          </div>
+        </div>
+
+        <!-- Tab 3: Direct Exports -->
+        <div id="paneShareExport" class="hidden space-y-3">
+          <div class="p-4 rounded-xl border border-white/10 bg-[#0f1013] space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-white text-xs">Full ZIP Archive</h4>
+                <p class="text-[11px] text-neutral-400">Includes all HTML, CSS, JS source files and an auto-generated README.md setup guide.</p>
+              </div>
+              <button onclick="downloadProjectZip()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs flex items-center gap-1.5 transition shadow">
+                <i class="fa-solid fa-file-zipper text-[11px]"></i>
+                <span>Download ZIP</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-white/10 bg-[#0f1013] space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-white text-xs">Single Standalone HTML Bundle</h4>
+                <p class="text-[11px] text-neutral-400">Inlines all CSS and JavaScript into a single, self-contained HTML file runnable directly from any device or browser.</p>
+              </div>
+              <button onclick="downloadProjectBundle()" class="px-4 py-2 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs flex items-center gap-1.5 transition shadow">
+                <i class="fa-solid fa-download text-[11px]"></i>
+                <span>Download HTML</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end pt-3 border-t border-white/10">
+        <button onclick="closeShareDeployModal()" class="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: KEYBOARD SHORTCUTS -->
+  <!-- ======================================================== -->
+  <div id="shortcutsModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#14151a] border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-neutral-100 flex flex-col">
+      <button onclick="closeShortcutsModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-white transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
+        <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
+          <i class="fa-solid fa-keyboard text-sm"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white">Keyboard Shortcuts</h3>
+          <p class="text-[11px] text-neutral-400">Accelerate your workflow with quick keybindings.</p>
+        </div>
+      </div>
+
+      <div class="space-y-2 divide-y divide-white/5 text-xs">
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Save active file</span>
+          <div class="flex items-center gap-1 font-mono text-[11px]">
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Ctrl</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">S</kbd>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Submit prompt / chat message</span>
+          <div class="flex items-center gap-1 font-mono text-[11px]">
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Ctrl</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Enter</kbd>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Toggle live preview runtime</span>
+          <div class="flex items-center gap-1 font-mono text-[11px]">
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Ctrl</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">P</kbd>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Open version history</span>
+          <div class="flex items-center gap-1 font-mono text-[11px]">
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Ctrl</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-1.5 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Shift</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">H</kbd>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Create new file</span>
+          <div class="flex items-center gap-1 font-mono text-[11px]">
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Ctrl</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-1.5 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">Shift</kbd>
+            <span class="text-neutral-500">+</span>
+            <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200">F</kbd>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Toggle shortcuts cheatsheet</span>
+          <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200 font-mono text-[11px]">?</kbd>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-neutral-300">Close modal / cancel</span>
+          <kbd class="px-2 py-0.5 bg-[#090a0d] border border-white/20 rounded text-neutral-200 font-mono text-[11px]">Esc</kbd>
+        </div>
+      </div>
+
+      <div class="pt-4 mt-2 border-t border-white/10 text-right">
+        <button onclick="closeShortcutsModal()" class="px-4 py-1.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Animated Toast Notifications Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none select-none">
+    <!-- Toast items dynamically added by showToast() in app.js -->
+  </div>
+
+  <!-- Main Controller Script -->
+  <script src="app.js"></script>
+</body>
+</html>
