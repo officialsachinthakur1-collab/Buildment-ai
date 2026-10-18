@@ -1,2004 +1,300 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buildment — Production Web Apps with Natural Language</title>
-
-  <!-- Google Fonts: Geist, JetBrains Mono, Material Symbols Outlined -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- CodeMirror 5 Syntax Highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
-
-  <!-- Tailwind CSS with forms and container queries -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#8ed5ff",
-            "primary-container": "#38bdf8",
-            "surface": "#090d16",
-            "surface-dim": "#090d16",
-            "surface-container-lowest": "#06090f",
-            "surface-container-low": "#111622",
-            "surface-container": "#151b28",
-            "surface-container-high": "#1d2433",
-            "surface-container-highest": "#31353f",
-            "on-surface": "#dfe2f0",
-            "on-surface-variant": "#94a3b8",
-            "outline": "#87929a",
-            "outline-variant": "#3e484f",
-            "secondary": "#b4c5ff",
-            "secondary-container": "#0053db",
-            "tertiary": "#6adbff",
-            "error": "#ffb4ab",
-            "error-container": "#93000a",
-            "brand-glow": "#00D2FF"
-          },
-          fontFamily: {
-            sans: ["Geist", "Inter", "sans-serif"],
-            mono: ["JetBrains Mono", "monospace"]
-          }
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "primary": "#8ed5ff",
+          "surface-variant": "#31353f",
+          "on-secondary-fixed-variant": "#003ea8",
+          "on-error": "#690005",
+          "surface": "#090d16",
+          "on-tertiary-container": "#004b5c",
+          "primary-fixed-dim": "#7bd0ff",
+          "on-surface": "#dfe2f0",
+          "inverse-surface": "#dfe2f0",
+          "tertiary-fixed-dim": "#47d6ff",
+          "secondary": "#b4c5ff",
+          "tertiary-fixed": "#b6ebff",
+          "inverse-on-surface": "#2c303a",
+          "on-primary-fixed-variant": "#004c69",
+          "background": "#090d16",
+          "on-tertiary-fixed": "#001f28",
+          "on-tertiary-fixed-variant": "#004e60",
+          "inverse-primary": "#00668a",
+          "on-secondary-container": "#cdd7ff",
+          "surface-container-highest": "#31353f",
+          "secondary-container": "#0053db",
+          "on-secondary-fixed": "#00174b",
+          "outline": "#87929a",
+          "secondary-fixed": "#dbe1ff",
+          "on-error-container": "#ffdad6",
+          "surface-container-low": "#111622",
+          "tertiary": "#6adbff",
+          "surface-container-lowest": "#06090f",
+          "outline-variant": "#3e484f",
+          "surface-container": "#151b28",
+          "secondary-fixed-dim": "#b4c5ff",
+          "primary-fixed": "#c4e7ff",
+          "surface-container-high": "#1d2433",
+          "surface-dim": "#090d16",
+          "on-primary": "#00354a",
+          "on-tertiary": "#003543",
+          "error": "#ffb4ab",
+          "on-primary-container": "#004965",
+          "on-background": "#dfe2f0",
+          "error-container": "#93000a",
+          "surface-bright": "#353943",
+          "tertiary-container": "#00c1ea",
+          "on-primary-fixed": "#001e2c",
+          "on-surface-variant": "#94a3b8",
+          "surface-tint": "#7bd0ff",
+          "primary-container": "#38bdf8",
+          "on-secondary": "#002a78"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.75rem",
+          "lg": "1.25rem",
+          "xl": "1.75rem",
+          "full": "9999px"
+        },
+        "fontFamily": {
+          "label-md": ["Geist"],
+          "label-sm": ["Geist"],
+          "display-hero": ["Geist"],
+          "body-md": ["Geist"],
+          "headline-lg": ["Geist"],
+          "display-hero-mobile": ["Geist"],
+          "headline-lg-mobile": ["Geist"],
+          "title-sm": ["Geist"],
+          "headline-md": ["Geist"],
+          "body-lg": ["Geist"],
+          "code-inline": ["JetBrains Mono"]
         }
       }
-    };
-  </script>
+    }
+  }
+</script></head><body class="bg-[#090d16] font-body-md text-[#dfe2f0] antialiased selection:bg-sky-500/30 selection:text-white"><header class="fixed top-0 left-0 right-0 z-50 bg-[#090d16]/75 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"><div class="h-16 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><div class="flex items-center gap-10"><a class="flex items-center gap-2.5 group" data-path="product" href="#"><div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.2)] group-hover:border-sky-400/60 transition-colors"><span class="material-symbols-outlined text-[19px]">terminal</span></div><span class="text-white text-lg font-semibold tracking-tight">Buildment</span></a></div><div class="flex items-center gap-4"><a class="hidden sm:inline-flex text-sm text-slate-300 hover:text-white transition-colors px-3 py-1.5" data-path="sign-in" href="#">Sign In</a><a class="inline-flex items-center justify-center px-4 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)]" data-path="sign-up" href="#">Get started for free</a><div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors"><span class="material-symbols-outlined text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-[#090d16]"><div class="flex flex-col w-full relative">
+<!-- Top Background Ambient Glow Layer (FORGEX electric cyan / sky glow style) -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-sky-500/25 via-sky-600/10 to-transparent blur-[120px] rounded-full pointer-events-none -z-10"></div>
+<div class="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-cyan-400/15 blur-[90px] rounded-full pointer-events-none -z-10"></div>
+<!-- Hero Section -->
+<section class="max-w-6xl mx-auto px-6 lg:px-8 pt-16 pb-16 flex flex-col items-center text-center relative z-10">
+<!-- Announcement Badge -->
+<a class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#131926]/90 border border-sky-400/30 hover:border-sky-400/60 shadow-[0_0_20px_rgba(56,189,248,0.15)] transition-all mb-8 group backdrop-blur-md" data-path="changelog" href="#">
+<span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+<span class="text-xs font-semibold text-white tracking-wide uppercase">Introducing Buildment 2.0</span>
+<span class="text-xs text-sky-200/70 group-hover:text-sky-200 transition-colors">From prompt to production in seconds →</span>
+</a>
+<!-- Headline & Subtitle -->
+<h1 class="text-white text-4xl sm:text-6xl font-bold max-w-4xl tracking-tight leading-[1.08] mb-6">
+        Build production web apps with natural language.
+      </h1>
 
-  <style>
-    /* Custom Obsidian Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.4); }
+<!-- Hero AI Interactive Prompt Box -->
+<div class="w-full max-w-4xl rounded-2xl bg-[#0d131f] border border-sky-400/30 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] p-6 sm:p-8 text-left transition-all relative backdrop-blur-xl group hover:border-sky-400/60 min-h-[220px] flex flex-col justify-between">
+<div class="absolute -inset-[1px] bg-gradient-to-r from-sky-500/25 via-white/5 to-cyan-400/25 rounded-2xl -z-10 blur-sm opacity-60 group-hover:opacity-90 transition-opacity pointer-events-none"></div>
+<div class="flex items-start w-full flex-1 mb-6">
+<textarea id="heroPromptInput" rows="4" class="w-full bg-transparent border-0 text-white placeholder-slate-500 text-base sm:text-lg focus:ring-0 focus:outline-none resize-none leading-relaxed font-normal p-0" placeholder="Describe the web application, SaaS platform, or interface you want to build..."></textarea>
+</div>
+<div class="pt-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-2.5">
+<button class="h-8 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-sky-400/40 text-slate-300 hover:text-white flex items-center gap-1.5 transition-all shadow-sm" title="Attach files, Figma mockups, or specs" type="button">
+<span class="material-symbols-outlined text-[16px] text-sky-400">add</span>
+<span class="text-xs text-slate-300 font-medium">Attach context or specs</span>
+</button>
 
-    /* CodeMirror Cybernetic Styling */
-    .CodeMirror {
-      height: 100% !important;
-      font-family: 'JetBrains Mono', monospace !important;
-      font-size: 12px !important;
-      background: #06090f !important;
-      color: #dfe2f0 !important;
-      line-height: 1.6 !important;
-    }
-    .CodeMirror-gutters {
-      background: #090d16 !important;
-      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-    }
-    .CodeMirror-linenumber {
-      color: #64748b !important;
-      padding: 0 8px 0 4px !important;
-    }
-    .CodeMirror-cursor {
-      border-left: 2px solid #38bdf8 !important;
-    }
+</div>
+<div class="flex items-center gap-3">
+<span class="hidden sm:inline-flex text-[11px] font-mono text-slate-500 tracking-wider items-center gap-1">⌘ + Enter</span>
+<button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.6)] group/btn cursor-pointer" id="generateAppBtn" type="button">
+<span class="">Generate</span>
+<span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-0.5 transition-transform font-bold">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Example Prompt Chips -->
+<div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5 max-w-4xl px-4"><button class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" data-prompt="A high-velocity fintech treasury dashboard with live settlement analytics, multi-currency wallets, and instant payout rails." type="button"><svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span class="">Fintech Treasury Dashboard</span></button><button class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" data-prompt="An interactive AI voice agent sandbox with waveform visualizers, latency meters, and tool-calling config." type="button"><svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="12" rx="2" width="18" x="3" y="8"></rect><line x1="12" x2="12" y1="2" y2="8"></line><line x1="8" x2="8" y1="14" y2="16"></line><line x1="16" x2="16" y1="14" y2="16"></line></svg><span class="">AI Voice Agent Sandbox</span></button><button class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" data-prompt="Modern B2B product analytics hub with conversion funnels, churn cohort heatmaps, and SQL editor." type="button"><svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg><span class="">B2B Analytics Hub</span></button><button class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" data-prompt="Minimalist headless e-commerce storefront with cart drawers, instant search indexing, and Stripe checkout." type="button"><svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg><span class="">Headless Storefront</span></button></div>
+<!-- FORGEX Style Workspace Showcase Mockup Preview with glowing arc rim highlight -->
 
-    /* Toast Slide Animations */
-    @keyframes toastSlideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes toastFadeOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
-    }
-    .toast-enter {
-      animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .toast-exit {
-      animation: toastFadeOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+</section>
+</div>
+<!-- Social Proof / Logo Cloud -->
 
-    /* Diff Lines */
-    .diff-line-add { background-color: rgba(16, 185, 129, 0.15) !important; color: #a7f3d0 !important; }
-    .diff-line-del { background-color: rgba(244, 63, 94, 0.15) !important; color: #fecdd3 !important; }
-    .diff-line-ctx { color: #94a3b8 !important; }
-    .diff-line-hunk { background-color: rgba(56, 189, 248, 0.12) !important; color: #7bd0ff !important; font-weight: 600; }
+<!-- Value Props / Feature Grid (3 Core Pillars) -->
 
-    /* Device Viewport Bezels */
-    .viewport-mobile {
-      width: 375px !important;
-      height: 667px !important;
-      border: 12px solid #111622 !important;
-      border-radius: 36px !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.15) !important;
-    }
-    .viewport-tablet {
-      width: 768px !important;
-      height: 90% !important;
-      border: 12px solid #111622 !important;
-      border-radius: 24px !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.15) !important;
-    }
-    .viewport-desktop {
-      width: 100% !important;
-      height: 100% !important;
-      border: none !important;
-      border-radius: 0 !important;
-    }
-  </style>
-</head>
-<body class="bg-[#090d16] font-sans text-[#dfe2f0] min-h-screen antialiased flex flex-col selection:bg-sky-500/30 selection:text-white">
-
-  <!-- ======================================================== -->
-  <!-- 0. PUBLIC MARKETING LANDING PAGE VIEW (Obsidian Cybernetic) -->
-  <!-- ======================================================== -->
-  <div id="landingView" class="flex-1 flex flex-col min-h-screen bg-[#090d16] overflow-y-auto">
-    
-    <!-- Top Glass Navigation Bar -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#090d16]/75 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-      <div class="h-16 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
-        <div class="flex items-center gap-10">
-          <a class="flex items-center gap-2.5 group" href="#" onclick="showLandingView(); return false;">
-            <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.2)] group-hover:border-sky-400/60 transition-colors">
-              <span class="material-symbols-outlined text-[19px]">terminal</span>
-            </div>
-            <span class="text-white text-lg font-semibold tracking-tight">Buildment<span class="text-sky-400 font-mono text-sm ml-1">2.0</span></span>
-          </a>
-          <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-400">
-            <a href="#landingHero" class="hover:text-white transition">Platform</a>
-            <a href="#landingTemplates" class="hover:text-white transition">Templates</a>
-            <a href="#landingPricing" class="hover:text-white transition">Pricing</a>
-            <a href="#landingSecurity" class="hover:text-white transition">Sandboxing</a>
-          </nav>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <button onclick="openAuthModal('login')" class="hidden sm:inline-flex text-sm text-slate-300 hover:text-white transition-colors px-3 py-1.5 font-medium">
-            Sign In
-          </button>
-          <button onclick="showDashboardView()" class="inline-flex items-center justify-center px-4 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)]">
-            <span>Launch Studio</span>
-            <span class="material-symbols-outlined text-[16px] ml-1">arrow_forward</span>
-          </button>
-          <button onclick="openSettingsModal()" class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors" title="Account Settings">
-            <span class="material-symbols-outlined text-[18px]">person</span>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Landing Body -->
-    <main class="w-full pt-16 bg-[#090d16]">
-      <div class="flex flex-col w-full relative">
-        <!-- Top Background Ambient Glow Layer (FORGEX electric cyan / sky glow) -->
-        <div class="relative w-full overflow-hidden" id="landingHero">
-          <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-sky-500/25 via-sky-600/10 to-transparent blur-[120px] rounded-full pointer-events-none -z-10"></div>
-          <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-cyan-400/15 blur-[90px] rounded-full pointer-events-none -z-10"></div>
-
-          <!-- Hero Section -->
-          <section class="max-w-6xl mx-auto px-6 lg:px-8 pt-16 pb-16 flex flex-col items-center text-center relative z-10">
-            <!-- Announcement Badge -->
-            <a class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#131926]/90 border border-sky-400/30 hover:border-sky-400/60 shadow-[0_0_20px_rgba(56,189,248,0.15)] transition-all mb-8 group backdrop-blur-md" href="#landingTemplates">
-              <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-              <span class="text-xs font-semibold text-white tracking-wide uppercase">Introducing Buildment 2.0</span>
-              <span class="text-xs text-sky-200/70 group-hover:text-sky-200 transition-colors">From prompt to production in seconds →</span>
-            </a>
-
-            <!-- Headline & Subtitle -->
-            <h1 class="text-white text-4xl sm:text-6xl font-bold max-w-4xl tracking-tight leading-[1.08] mb-6">
-              Build production web apps with <span class="bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">natural language</span>.
-            </h1>
-            <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
-              Describe what you need in natural language. Buildment synthesizes complete multi-file source code, compiles inside an isolated live preview sandbox, and auto-repairs bugs autonomously.
+<!-- Interactive Templates Carousel / Grid -->
+<section class="max-w-6xl mx-auto px-6 lg:px-8 pb-24 w-full">
+<div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
+<div>
+<span class="text-xs text-sky-400 font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/20">Starter Blueprints</span>
+<h2 class="text-2xl sm:text-3xl text-white font-bold tracking-tight mt-2">Start from battle-tested architecture</h2>
+</div>
+<a class="inline-flex items-center gap-1.5 text-sm text-slate-300 hover:text-sky-400 font-medium transition-colors" data-path="templates" href="#">
+<span class="">Explore all 40+ templates</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Template 1 -->
+<div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
+<div class="h-48 bg-[#111724] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100" data-alt="A clean modern SaaS analytics suite user interface dashboard screenshot with dark blue metrics cards and graphs on a soft neutral light gray canvas, minimal UI design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAztdmkMNvIcS5w_vrikvs5QERkoooAHVR9jkp7qk6h5jRu9kWtBF4jmRRw0tVzgJIirAeTC9pZc63D-_b7vX3LBzaxhJVjvsCMWUAOu3lsFA5KFxqJpsOVXGLOEKsC5Buil76BxWHme0VStJwjwH9tl16NOY3HdzvpuYBAPser00fuSDs6RpxmnraXyZvMKYVt9v8JaDxdxiBJVDLmxyPGl0EgsATEcHr8gLBxxnpdwdjXTyl3uQzr">
+<div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
+            Next.js 15
+          </div>
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base text-white font-semibold">SaaS Analytics Suite</h3>
+<span class="material-symbols-outlined text-sky-400 text-[18px]">query_stats</span>
+</div>
+<p class="text-xs text-slate-400 mb-5 leading-relaxed">
+              Revenue cohort charts, churn tracking, team permission matrices, and Stripe billing portal integration.
             </p>
-
-            <!-- Hero AI Interactive Prompt Box -->
-            <div class="w-full max-w-4xl rounded-2xl bg-[#0d131f] border border-sky-400/30 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] p-6 sm:p-8 text-left transition-all relative backdrop-blur-xl group hover:border-sky-400/60 min-h-[200px] flex flex-col justify-between">
-              <div class="absolute -inset-[1px] bg-gradient-to-r from-sky-500/25 via-white/5 to-cyan-400/25 rounded-2xl -z-10 blur-sm opacity-60 group-hover:opacity-90 transition-opacity pointer-events-none"></div>
-              
-              <div class="flex items-start w-full flex-1 mb-4">
-                <textarea 
-                  id="landingPromptInput" 
-                  rows="3" 
-                  class="w-full bg-transparent border-0 text-white placeholder-slate-500 text-base sm:text-lg focus:ring-0 focus:outline-none resize-none leading-relaxed font-normal p-0" 
-                  placeholder="Describe the web application, SaaS platform, or interface you want to build..."
-                  onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); handleLandingPromptSubmit(); }"
-                ></textarea>
-              </div>
-
-              <div class="pt-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
-                <div class="flex flex-wrap items-center gap-2.5">
-                  <button onclick="setLandingPrompt('Modern SaaS analytics suite with MRR cohorts, conversion funnels, and Stripe checkout')" class="h-8 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-sky-400/40 text-slate-300 hover:text-white flex items-center gap-1.5 transition-all shadow-sm" type="button">
-                    <span class="material-symbols-outlined text-[16px] text-sky-400">add</span>
-                    <span class="text-xs text-slate-300 font-medium">Attach context or specs</span>
-                  </button>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="hidden sm:inline-flex text-[11px] font-mono text-slate-500 tracking-wider items-center gap-1">⌘ + Enter</span>
-                  <button 
-                    onclick="handleLandingPromptSubmit()" 
-                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.6)] group/btn cursor-pointer" 
-                    id="generateAppBtn" 
-                    type="button"
-                  >
-                    <span>Generate</span>
-                    <span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-0.5 transition-transform font-bold">arrow_forward</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quick Example Prompt Chips -->
-            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5 max-w-4xl px-4">
-              <button onclick="setLandingPrompt('A high-velocity fintech treasury dashboard with live settlement analytics, multi-currency wallets, and instant payout rails.')" class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" type="button">
-                <svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                <span>Fintech Treasury Dashboard</span>
-              </button>
-              <button onclick="setLandingPrompt('An interactive AI voice agent sandbox with waveform visualizers, latency meters, and tool-calling config.')" class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" type="button">
-                <svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="12" rx="2" width="18" x="3" y="8"></rect><line x1="12" x2="12" y1="2" y2="8"></line><line x1="8" x2="8" y1="14" y2="16"></line><line x1="16" x2="16" y1="14" y2="16"></line></svg>
-                <span>AI Voice Agent Sandbox</span>
-              </button>
-              <button onclick="setLandingPrompt('Modern B2B product analytics hub with conversion funnels, churn cohort heatmaps, and SQL editor.')" class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" type="button">
-                <svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
-                <span>B2B Analytics Hub</span>
-              </button>
-              <button onclick="setLandingPrompt('Minimalist headless e-commerce storefront with cart drawers, instant search indexing, and Stripe checkout.')" class="prompt-chip group inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-xs text-slate-300 hover:text-white transition-all shadow-sm backdrop-blur-md cursor-pointer" type="button">
-                <svg class="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
-                <span>Headless Storefront</span>
-              </button>
-            </div>
-
-            <!-- Workspace Showcase Mockup Preview with glowing arc rim highlight -->
-            <div class="mt-12 w-full max-w-5xl rounded-2xl border border-sky-400/20 bg-[#0d131f] shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden text-left relative">
-              <div class="h-10 bg-[#090d16] border-b border-white/10 px-4 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
-                  <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
-                  <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                  <span class="ml-2 text-[11px] font-mono text-slate-400">buildment.ai/studio/workspace-preview</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-300 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-sky-400/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
-                    RUNNING ISOLATED SANDBOX
-                  </span>
-                </div>
-              </div>
-              
-              <div class="grid grid-cols-1 md:grid-cols-12 min-h-[300px]">
-                <div class="md:col-span-4 border-r border-white/10 bg-[#0c101b] p-4 flex flex-col justify-between space-y-3">
-                  <div class="space-y-3">
-                    <div class="flex items-center justify-between text-[11px] text-slate-400 border-b border-white/10 pb-2">
-                      <span class="font-bold text-white flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[15px] text-sky-400">terminal</span> AI Studio
-                      </span>
-                      <span class="font-mono text-[10px] text-sky-400">Gemini 2.5 Flash</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-                      <div class="text-[10px] text-slate-500 mb-1 font-mono">PROMPT</div>
-                      "Build a real-time revenue analytics dashboard with charts and customer metrics."
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-sky-950/30 border border-sky-500/20 text-xs text-slate-200 space-y-1.5">
-                      <div class="text-[10px] text-sky-400 font-mono font-semibold flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Synthesized Multi-File App:
-                      </div>
-                      <div class="flex items-center gap-1 flex-wrap text-[10px] font-mono">
-                        <span class="px-2 py-0.5 rounded bg-black/60 text-sky-300 border border-sky-400/20">index.html</span>
-                        <span class="px-2 py-0.5 rounded bg-black/60 text-sky-300 border border-sky-400/20">styles.css</span>
-                        <span class="px-2 py-0.5 rounded bg-black/60 text-sky-300 border border-sky-400/20">app.js</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="p-2 rounded-xl bg-black/50 border border-white/10 text-[11px] text-slate-400 flex items-center justify-between">
-                    <span>Auto-repair: 0 errors</span>
-                    <span class="text-emerald-400 font-bold">100% HEALTH</span>
-                  </div>
-                </div>
-
-                <div class="md:col-span-8 p-6 flex flex-col justify-center items-center text-center bg-[#090d16] space-y-4">
-                  <div class="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-[0_0_25px_rgba(56,189,248,0.3)]">
-                    <span class="material-symbols-outlined text-[28px]">deployed_code</span>
-                  </div>
-                  <h3 class="text-base font-semibold text-white">Full-Stack Sandboxed Live Preview</h3>
-                  <p class="text-xs text-slate-400 max-w-md leading-relaxed">
-                    Zero local configuration needed. Applications compile instantaneously in a strictly isolated browser runtime with Content Security Policies.
-                  </p>
-                  <button onclick="showDashboardView()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-sky-500/20 border border-white/15 hover:border-sky-400/40 text-white text-xs font-semibold transition">
-                    Explore Studio Environment →
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </section>
-        </div>
-
-        <!-- Interactive Templates Section (from code.html) -->
-        <section class="max-w-6xl mx-auto px-6 lg:px-8 pb-20 w-full" id="landingTemplates">
-          <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
-            <div>
-              <span class="text-xs text-sky-400 font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/20">Starter Blueprints</span>
-              <h2 class="text-2xl sm:text-3xl text-white font-bold tracking-tight mt-2">Start from battle-tested architecture</h2>
-            </div>
-            <button onclick="showDashboardView()" class="inline-flex items-center gap-1.5 text-sm text-slate-300 hover:text-sky-400 font-medium transition-colors">
-              <span>Explore all templates in Studio</span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </button>
+</div>
+<button class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
+            Use This Template
+          </button>
+</div>
+</div>
+<!-- Template 2 -->
+<div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
+<div class="h-48 bg-[#111724] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100" data-alt="Modern AI workflow studio dashboard interface featuring node based canvas editor, pipeline configuration cards, and clean developer console" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY0METdDQpDFQFS6bCkpUXFvKAOOvQ_NBSoGmrq87btsqmLXDdYfE_4Uwl2KfUmVQnIdeIpwmZXaq92cnF02paWdWleJbAtSblGKo0CotI_FIsCPJIwdi29pDoiZrAekZU3ECQ6P_ZWgMQM5AbIErUAkt68LOJ-EacA7ufD20itoe8gTZI7VKwChmDD8fboL8va5RC4YSY5G3ObY2vD7O6YoWcVOG_PmAU4dCN4w99tlmWTaYSIeaR">
+<div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
+            React Flow
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Template 1 -->
-            <div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
-              <div class="h-44 bg-[#111724] overflow-hidden relative flex items-center justify-center">
-                <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400 text-2xl group-hover:scale-110 transition-transform">
-                  <span class="material-symbols-outlined">query_stats</span>
-                </div>
-                <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
-                  Next.js 15
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-1 justify-between">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-base text-white font-semibold">SaaS Analytics Suite</h3>
-                    <span class="material-symbols-outlined text-sky-400 text-[18px]">query_stats</span>
-                  </div>
-                  <p class="text-xs text-slate-400 mb-5 leading-relaxed">
-                    Revenue cohort charts, churn tracking, team permission matrices, and Stripe billing portal integration.
-                  </p>
-                </div>
-                <button onclick="launchTemplateFromLanding('saas-landing')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
-                  Use This Template
-                </button>
-              </div>
-            </div>
-
-            <!-- Template 2 -->
-            <div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
-              <div class="h-44 bg-[#111724] overflow-hidden relative flex items-center justify-center">
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
-                  <span class="material-symbols-outlined">account_tree</span>
-                </div>
-                <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
-                  React Flow
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-1 justify-between">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-base text-white font-semibold">AI Workflow Studio</h3>
-                    <span class="material-symbols-outlined text-sky-400 text-[18px]">account_tree</span>
-                  </div>
-                  <p class="text-xs text-slate-400 mb-5 leading-relaxed">
-                    Visual node-based orchestration for multi-model LLM chains, semantic search pipelines, and vector DB stores.
-                  </p>
-                </div>
-                <button onclick="launchTemplateFromLanding('dashboard-analytics')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
-                  Use This Template
-                </button>
-              </div>
-            </div>
-
-            <!-- Template 3 -->
-            <div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
-              <div class="h-44 bg-[#111724] overflow-hidden relative flex items-center justify-center">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition-transform">
-                  <span class="material-symbols-outlined">storefront</span>
-                </div>
-                <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
-                  Tailwind + Supabase
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-1 justify-between">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-base text-white font-semibold">Modern Marketplace</h3>
-                    <span class="material-symbols-outlined text-sky-400 text-[18px]">storefront</span>
-                  </div>
-                  <p class="text-xs text-slate-400 mb-5 leading-relaxed">
-                    Multi-vendor merchant stores with instant faceted filtering, digital checkout carts, and payouts.
-                  </p>
-                </div>
-                <button onclick="launchTemplateFromLanding('ecommerce-store')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
-                  Use This Template
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Pricing Section -->
-        <section class="max-w-6xl mx-auto px-6 lg:px-8 pb-20 w-full" id="landingPricing">
-          <div class="text-center max-w-2xl mx-auto mb-10">
-            <span class="text-xs text-sky-400 font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/20">Transparent Pricing</span>
-            <h2 class="text-2xl sm:text-3xl text-white font-bold tracking-tight mt-2">Zero Friction Plans</h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-2">Start free. Upgrade anytime with instant zero-card switching.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <!-- Free Plan -->
-            <div class="p-6 rounded-2xl bg-[#0e1422] border border-white/10 flex flex-col justify-between space-y-6">
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-white text-base">Free Starter</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300">Default Tier</span>
-                </div>
-                <div class="text-3xl font-extrabold text-white">$0 <span class="text-xs font-normal text-slate-500">/ forever</span></div>
-                <p class="text-xs text-slate-400">Ideal for personal experimentation, learning, and lightweight prototyping.</p>
-                <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-white/5 font-mono">
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>5 AI Generations per day</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>20 Chat prompt updates</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>10 Auto-repairs with diffs</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>100,000 daily token budget</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>SQLite & Git Versioning</span></li>
-                </ul>
-              </div>
-              <button onclick="showDashboardView()" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black font-bold text-xs transition">
-                Start Free Now
-              </button>
-            </div>
-
-            <!-- Pro Plan -->
-            <div class="p-6 rounded-2xl bg-gradient-to-b from-sky-950/20 to-[#0e1422] border border-sky-400/40 flex flex-col justify-between space-y-6 relative shadow-xl shadow-sky-950/20">
-              <div class="absolute -top-3 right-6 px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-sky-400 to-cyan-400 text-slate-950 shadow">
-                RECOMMENDED
-              </div>
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-white text-base">Pro Developer</span>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold border border-sky-500/30">High Capacity</span>
-                </div>
-                <div class="text-3xl font-extrabold text-sky-300">$29 <span class="text-xs font-normal text-slate-500">/ month (Free in Dev)</span></div>
-                <p class="text-xs text-slate-400">High-volume generative coding, deep auto-repair passes, and large codebases.</p>
-                <ul class="text-xs text-slate-200 space-y-2 pt-2 border-t border-white/5 font-mono">
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[16px]">bolt</span><span>100 AI Generations per day</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[16px]">bolt</span><span>500 Chat prompt updates</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[16px]">bolt</span><span>200 Auto-repairs with diffs</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[16px]">bolt</span><span>2,000,000 daily token budget</span></li>
-                  <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[16px]">check</span><span>Priority AI synthesis queue</span></li>
-                </ul>
-              </div>
-              <button onclick="handleSwitchPlan('pro'); showDashboardView();" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-bold text-xs transition shadow-md flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-[16px]">bolt</span>
-                <span>Unlock Pro Tier</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <!-- Final High Impact CTA Banner with Cybernetic Glow (from code.html) -->
-        <section class="max-w-6xl mx-auto px-6 lg:px-8 pb-16 w-full relative" id="landingSecurity">
-          <div class="relative rounded-2xl bg-gradient-to-b from-[#111726] to-[#0a0e17] border border-white/15 p-8 sm:p-12 shadow-[0_10px_50px_rgba(0,0,0,0.8)] flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden">
-            <!-- Ambient Cyan Radiance in Background -->
-            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-sky-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-            <div class="absolute -left-20 -top-20 w-80 h-80 bg-sky-500/15 rounded-full blur-[80px] pointer-events-none"></div>
-            <div class="flex flex-col gap-2 max-w-xl text-left relative z-10">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-                <span class="text-xs text-sky-400 uppercase tracking-widest font-semibold">Immediate Execution</span>
-              </div>
-              <h3 class="text-2xl sm:text-3xl text-white font-bold tracking-tight">
-                Start building your next idea today. Free tier included.
-              </h3>
-              <p class="text-sm text-slate-400 leading-relaxed">
-                No credit card required. Generate full applications, sync to GitHub, and deploy to your custom domain in minutes.
-              </p>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0 relative z-10">
-              <button onclick="showDashboardView()" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.6)]">
-                Get Started Free
-              </button>
-              <button onclick="openShortcutsModal()" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white font-medium text-sm transition-colors">
-                View Shortcuts
-              </button>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-
-    <!-- Footer (from code.html) -->
-    <footer class="w-full bg-[#06090f] border-t border-white/10 pt-16 pb-12">
-      <div class="max-w-7xl mx-auto px-6 lg:px-12">
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12">
-          <div class="col-span-2 flex flex-col gap-3">
-            <div class="flex items-center gap-2.5">
-              <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400">
-                <span class="material-symbols-outlined text-[16px]">terminal</span>
-              </div>
-              <span class="text-base text-white font-semibold tracking-tight">Buildment</span>
-            </div>
-            <p class="text-xs text-slate-400 max-w-sm mt-1 leading-relaxed">
-              Next-generation developer toolchain for shipping high-velocity web applications with surgical architectural clarity.
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base text-white font-semibold">AI Workflow Studio</h3>
+<span class="material-symbols-outlined text-sky-400 text-[18px]">account_tree</span>
+</div>
+<p class="text-xs text-slate-400 mb-5 leading-relaxed">
+              Visual node-based orchestration for multi-model LLM chains, semantic search pipelines, and vector DB stores.
             </p>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Operational • v2.4.0</span>
-            </div>
-          </div>
-          <div class="flex flex-col gap-2.5">
-            <span class="text-xs text-white uppercase tracking-wider font-semibold">Product</span>
-            <a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" href="#" onclick="showDashboardView(); return false;">Platform Core</a>
-            <a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" href="#landingTemplates">Starters & Templates</a>
-            <a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" href="#landingPricing">Pricing</a>
-          </div>
-          <div class="flex flex-col gap-2.5">
-            <span class="text-xs text-white uppercase tracking-wider font-semibold">Resources</span>
-            <button onclick="openShortcutsModal()" class="text-left text-xs text-slate-400 hover:text-sky-300 transition-colors">Keyboard Shortcuts</button>
-            <a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" href="#" onclick="showDashboardView(); return false;">Studio IDE</a>
-          </div>
-          <div class="flex flex-col gap-2.5">
-            <span class="text-xs text-white uppercase tracking-wider font-semibold">Legal & Security</span>
-            <span class="text-xs text-slate-400">Argon2id Hashed</span>
-            <span class="text-xs text-slate-400">CSP Sandboxed</span>
-            <span class="text-xs text-slate-400">SQLite Isolated</span>
-          </div>
-        </div>
-        <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-slate-500">© 2026 Buildment, Inc. All rights reserved.</p>
-          <div class="flex items-center gap-6">
-            <button onclick="showDashboardView()" class="text-xs text-slate-500 hover:text-slate-300 transition-colors">Launch Dashboard</button>
-            <button onclick="openAuthModal('login')" class="text-xs text-slate-500 hover:text-slate-300 transition-colors">Account Login</button>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- ======================================================== -->
-  <!-- 1. DASHBOARD VIEW (Obsidian Cybernetic Studio)           -->
-  <!-- ======================================================== -->
-  <div id="dashboardView" class="hidden flex-1 flex overflow-hidden min-h-screen bg-[#090d16]">
-    
-    <!-- Sidebar -->
-    <aside class="w-64 border-r border-white/10 bg-[#0c101b] flex flex-col shrink-0 select-none">
-      <!-- App Header -->
-      <div class="h-14 px-4 border-b border-white/10 flex items-center justify-between">
-        <button onclick="showLandingView()" class="flex items-center gap-2.5 hover:opacity-80 transition group text-left" title="View Landing Page">
-          <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 shadow-sm group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined text-[17px]">terminal</span>
-          </div>
-          <span class="font-bold text-base tracking-tight text-white">Buildment<span class="text-sky-400">.ai</span></span>
-          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-slate-400">v2.0</span>
-        </button>
-      </div>
-
-      <!-- New Project CTA -->
-      <div class="p-3 border-b border-white/5 space-y-2">
-        <button onclick="openNewProjectModal()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-semibold text-xs transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(56,189,248,0.25)]">
-          <span class="material-symbols-outlined text-[16px] font-bold">add</span>
-          <span>New Project</span>
-        </button>
-      </div>
-
-      <!-- Project List Navigation -->
-      <div class="flex-1 overflow-y-auto p-2 space-y-1">
-        <div class="px-2 py-1.5 text-[10px] uppercase font-bold text-slate-500 tracking-wider flex items-center justify-between">
-          <span>Saved Projects (<span id="sidebarProjectCount">0</span>)</span>
-          <button onclick="loadProjects()" class="text-slate-500 hover:text-white" title="Refresh List"><i class="fa-solid fa-rotate-right text-[9px]"></i></button>
-        </div>
-        <div id="sidebarProjectList" class="space-y-0.5">
-          <div class="p-3 text-center text-xs text-slate-500">Loading projects...</div>
-        </div>
-      </div>
-
-      <!-- Server & AI Status Card -->
-      <div class="p-3 border-t border-white/10 bg-[#090d16] space-y-2">
-        <div id="aiStatusCard" class="p-2.5 rounded-xl border border-white/10 bg-[#111622] flex items-center justify-between text-xs">
-          <div class="flex items-center gap-2">
-            <span id="aiStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            <div>
-              <div id="aiStatusTitle" class="font-semibold text-slate-200 text-[11px]">AI Checking...</div>
-              <div id="aiStatusSub" class="text-[10px] text-slate-400 font-mono">Inspecting .env</div>
-            </div>
-          </div>
-          <button onclick="checkAIStatus(true)" class="text-slate-400 hover:text-white text-xs p-1" title="Refresh Status">
-            <i class="fa-solid fa-rotate-right"></i>
+</div>
+<button class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
+            Use This Template
           </button>
-        </div>
-
-        <!-- User Plan & Daily Token Quota Meter -->
-        <div id="sidebarQuotaWidget" class="p-2.5 rounded-xl border border-white/10 bg-[#111622] space-y-2 text-xs">
-          <div class="flex items-center justify-between">
-            <span id="userPlanBadge" class="px-2 py-0.5 rounded-full font-bold text-[9px] tracking-wide uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
-              FREE PLAN
-            </span>
-            <button onclick="openPlanUpgradeModal()" id="btnUpgradePlan" class="text-[10px] font-semibold text-sky-400 hover:text-sky-300 hover:underline flex items-center gap-1 transition">
-              <span class="material-symbols-outlined text-[13px]">bolt</span>
-              <span id="planActionText">Upgrade</span>
-            </button>
+</div>
+</div>
+<!-- Template 3 -->
+<div class="rounded-2xl bg-[#0e1422] border border-white/10 hover:border-sky-400/40 shadow-[0_4px_25px_rgba(0,0,0,0.4)] transition-all overflow-hidden flex flex-col group">
+<div class="h-48 bg-[#111724] overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100" data-alt="High-end modern marketplace storefront user interface with crisp product catalog grid, filter facets, and streamlined shopping cart drawer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfzrQMh_pJEbkcYjNEzaYX12Ga33qBuwB9Uw1WwgmxHiUBsPCKKwZWVc2lQAwR0pfYqUB-pFR4lfnZgX2duo0NS398kIeTQo-wNBo4mb1-FmaIRIayLOF69m7mihPxfbPHq_n9PIrif9xlW6yfLvlyhu7V8qH9fsd-oKaQC9we-x_0ZfiQXNpFvNOZfUahY3N_VveDn_a-9urH7QOmjzQ4B5tFKhgE-yHiTnWVbj8n1wvROzwcDI13">
+<div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-[#090d16]/80 backdrop-blur border border-white/20 text-[11px] font-mono text-sky-300 font-medium">
+            Tailwind + Supabase
           </div>
-
-          <!-- Quota Progress Bar -->
-          <div class="space-y-1">
-            <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono">
-              <span>Daily AI Limit</span>
-              <span id="quotaGenerationsText" class="text-white font-semibold">0 / 5</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-              <div id="quotaGenerationsBar" class="h-full bg-sky-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
-            </div>
-          </div>
-
-          <!-- Token Usage & Reset Clock -->
-          <div class="flex items-center justify-between text-[9px] text-slate-400 font-mono pt-0.5 border-t border-white/5">
-            <span id="quotaTokensText">0 / 100k tok</span>
-            <span id="quotaResetText" title="Daily quota resets at 00:00 UTC"><i class="fa-regular fa-clock mr-1"></i>24h reset</span>
-          </div>
-        </div>
-
-        <!-- User Identity Tag & Account Trigger -->
-        <div class="p-2 rounded-xl bg-black/40 border border-white/5 space-y-1.5 text-xs text-slate-400">
-          <div class="flex items-center justify-between">
-            <button onclick="openSettingsModal()" class="flex items-center gap-1.5 truncate text-left hover:text-white transition group" title="Account settings">
-              <span class="material-symbols-outlined text-sky-400 text-[16px] group-hover:scale-110 transition-transform">security</span>
-              <span id="userAccountLabel" class="truncate font-mono font-medium text-slate-200">Developer</span>
-            </button>
-            <div class="flex items-center gap-1">
-              <button onclick="openSettingsModal()" class="text-[11px] text-slate-400 hover:text-white px-1 py-0.5 rounded" title="Settings">
-                <i class="fa-solid fa-gear"></i>
-              </button>
-              <button onclick="handleLogout()" id="btnLogout" class="text-[10px] text-slate-500 hover:text-red-400 px-1 py-0.5 rounded transition" title="Log Out">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-              </button>
-            </div>
-          </div>
-          <div id="migrationAlertBadge" class="hidden cursor-pointer px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 flex items-center justify-between" onclick="openAuthModal('migrate')">
-            <span><i class="fa-solid fa-triangle-exclamation mr-1"></i>Setup Password</span>
-            <i class="fa-solid fa-chevron-right text-[8px]"></i>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col overflow-y-auto bg-[#090d16]">
-      <!-- Top Navigation -->
-      <header class="h-14 border-b border-white/10 bg-[#090d16]/80 backdrop-blur-md px-6 md:px-8 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-4 flex-1 max-w-md">
-          <button onclick="showLandingView()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition" title="Back to Homepage">
-            <span class="material-symbols-outlined text-[16px]">home</span>
-            <span>Home</span>
-          </button>
-          <div class="h-4 w-[1px] bg-white/10"></div>
-          <!-- Real-Time Project Search Bar -->
-          <div class="relative flex-1">
-            <span class="material-symbols-outlined text-slate-500 text-[16px] absolute left-3 top-2">search</span>
-            <input 
-              type="text" 
-              id="projectSearchInput" 
-              placeholder="Filter projects by title..." 
-              class="w-full bg-[#111622] border border-white/10 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-sky-400 transition outline-none"
-              oninput="handleSearchProjects(event)"
-            />
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400">
-            <span class="material-symbols-outlined text-sky-400 text-[16px]">database</span>
-            <span>SQLite Storage: <strong class="text-white">Active</strong></span>
-          </div>
-          <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400">
-            <span class="material-symbols-outlined text-emerald-400 text-[16px]">shield</span>
-            <span>Sandbox: <strong class="text-white">Enforced</strong></span>
-          </div>
-          <button onclick="openNewProjectModal()" class="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-            <span class="material-symbols-outlined text-[15px] font-bold">add</span>
-            <span>Create</span>
-          </button>
-        </div>
-      </header>
-
-      <!-- Dashboard Hero Area -->
-      <div class="max-w-5xl w-full mx-auto px-6 py-8 space-y-8">
-        
-        <!-- Welcome Prompt Section -->
-        <div class="space-y-4 text-center">
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            What do you want to build with <span class="bg-gradient-to-r from-sky-400 to-cyan-300 bg-clip-text text-transparent">Buildment.ai</span>?
-          </h1>
-          <p class="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
-            Describe your idea. The AI synthesizes clean code, stores files in SQLite, and launches an isolated live preview.
-          </p>
-
-          <!-- Central Cybernetic Prompt Box -->
-          <div class="mt-4 text-left bg-[#0d131f] border border-sky-400/30 rounded-2xl p-5 sm:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.6),0_0_30px_rgba(56,189,248,0.12)] transition-all hover:border-sky-400/60 relative">
-            <div class="mb-3">
-              <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Project Name (Optional)</label>
-              <input 
-                type="text" 
-                id="heroProjectName" 
-                placeholder="e.g. SaaS Analytics Dashboard" 
-                class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 transition outline-none"
-              />
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">App Description</label>
-              <textarea 
-                id="heroPromptInput" 
-                rows="3" 
-                placeholder="Describe your app in natural language (e.g. 'Build a customer feedback dashboard with sentiment tags, filter by date, and export CSV button')..." 
-                class="w-full bg-[#090d16] border border-white/10 rounded-xl p-3 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-sky-400 resize-none leading-relaxed min-h-[85px] outline-none"
-              ></textarea>
-            </div>
-
-            <!-- Quick Chips inside Prompt Box -->
-            <div class="flex items-center gap-1.5 flex-wrap pt-2 text-[10px]">
-              <span class="text-slate-500">Quick start:</span>
-              <button type="button" onclick="setHeroPrompt('Build an analytics dashboard with KPI metric cards, dynamic charts, and CSV export', 'Analytics Dashboard')" class="px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-sky-500/10 text-slate-300 border border-white/10 hover:border-sky-400/40 transition">+ Analytics Dashboard</button>
-              <button type="button" onclick="setHeroPrompt('Build an e-commerce shop with product catalog, filter by category, and cart drawer', 'E-Commerce Store')" class="px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-sky-500/10 text-slate-300 border border-white/10 hover:border-sky-400/40 transition">+ E-Commerce Shop</button>
-              <button type="button" onclick="setHeroPrompt('Build a team Kanban board with draggable task cards and priority labels', 'Kanban Board')" class="px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-sky-500/10 text-slate-300 border border-white/10 hover:border-sky-400/40 transition">+ Kanban Board</button>
-            </div>
-
-            <div class="flex items-center justify-between pt-4 mt-3 border-t border-white/5">
-              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sky-400 text-[16px]">verified_user</span>
-                <span>Sandboxed in-browser execution with CSP security</span>
-              </div>
-              <button 
-                id="createAndBuildBtn" 
-                onclick="handleCreateFromHero()" 
-                class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-bold text-xs transition flex items-center gap-2 shadow-[0_0_20px_rgba(56,189,248,0.4)] active:scale-95 disabled:opacity-50"
-              >
-                <span class="material-symbols-outlined text-[16px] font-bold">bolt</span>
-                <span>Create & Open Project</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Starter Templates Gallery -->
-        <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-base font-bold text-white">Starter Templates Gallery</h2>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 font-bold border border-sky-500/30">1-Click Launch</span>
-              </div>
-              <p class="text-xs text-slate-400">Launch a production-ready application with multi-file structure, responsive layouts, and interactive components.</p>
-            </div>
-            <button onclick="loadTemplates()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-              <i class="fa-solid fa-rotate-right text-[11px]"></i>
-              <span>Refresh</span>
-            </button>
-          </div>
-
-          <!-- Templates Grid Container -->
-          <div id="starterTemplatesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="p-4 text-center text-xs text-slate-500 col-span-full">Loading starter templates...</div>
-          </div>
-        </div>
-
-        <!-- Saved Projects Section -->
-        <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <div>
-              <h2 class="text-base font-bold text-white">Your Saved Projects</h2>
-              <p class="text-xs text-slate-400">Stored persistently in your local SQLite database with version snapshots.</p>
-            </div>
-            <button onclick="loadProjects()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-              <i class="fa-solid fa-rotate-right text-[11px]"></i>
-              <span>Refresh</span>
-            </button>
-          </div>
-
-          <!-- Projects Grid Container -->
-          <div id="projectsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Populated via loadProjects() in JS -->
-          </div>
-        </div>
-
-      </div>
-    </main>
-  </div>
-
-  <!-- ======================================================== -->
-  <!-- 2. WORKSPACE VIEW (Obsidian Cybernetic Workspace)        -->
-  <!-- ======================================================== -->
-  <div id="workspaceView" class="hidden flex-1 flex flex-col min-h-screen bg-[#090d16]">
-    
-    <!-- Top Workspace Header -->
-    <header class="h-12 border-b border-white/10 bg-[#0c101b] px-4 flex items-center justify-between shrink-0 select-none">
-      <!-- Left: Back to Dashboard & Project Title -->
-      <div class="flex items-center gap-3">
-        <button onclick="exitWorkspaceToDashboard()" class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition px-2.5 py-1 rounded-lg hover:bg-white/5">
-          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>Dashboard</span>
-        </button>
-        <div class="h-4 w-[1px] bg-white/10"></div>
-        <div class="flex items-center gap-2">
-          <span id="wsRuntimeStatusDot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
-          <span id="wsProjectName" class="font-bold text-xs text-white">Project Title</span>
-          <span id="wsFileCountBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300">0 files</span>
-        </div>
-      </div>
-
-      <!-- Center: Runtime Controls (Start, Stop, Restart) -->
-      <div class="flex items-center gap-2 bg-[#111622] p-1 rounded-xl border border-white/10">
-        <div class="flex items-center gap-1.5 px-2 text-[11px] font-mono">
-          <span class="text-slate-500">Runtime:</span>
-          <span id="wsRuntimeStatusText" class="font-bold text-slate-400">STOPPED</span>
-        </div>
-        <div class="h-3.5 w-[1px] bg-white/10"></div>
-        <button id="wsStartRuntimeBtn" onclick="handleStartRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-play text-[9px]"></i>
-          <span>Start</span>
-        </button>
-        <button id="wsStopRuntimeBtn" onclick="handleStopRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-stop text-[9px]"></i>
-          <span>Stop</span>
-        </button>
-        <button id="wsRestartRuntimeBtn" onclick="handleRestartRuntime()" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 flex items-center gap-1.5 transition" title="Restart preview session">
-          <i class="fa-solid fa-rotate-right text-[9px]"></i>
-          <span>Restart</span>
-        </button>
-      </div>
-
-      <!-- Right: Preview Tools & Actions -->
-      <div class="flex items-center gap-2">
-        <button onclick="openProjectHistoryModal()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Project Version History & Restore">
-          <span class="material-symbols-outlined text-[15px] text-sky-400">history</span>
-          <span>History</span>
-          <span id="wsVersionCountBadge" class="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-sky-500/20 text-sky-300 font-bold">v0</span>
-        </button>
-        <button onclick="downloadProjectZip()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Export Project as ZIP Archive">
-          <span class="material-symbols-outlined text-[15px] text-amber-400">folder_zip</span>
-          <span>ZIP</span>
-        </button>
-        <button onclick="downloadProjectBundle()" class="px-2.5 py-1 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Single HTML Bundle">
-          <span class="material-symbols-outlined text-[15px]">download</span>
-          <span>HTML</span>
-        </button>
-        <button onclick="openShareDeployModal()" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition" title="Share Embed Code & Deployment Guide">
-          <span class="material-symbols-outlined text-[15px] text-emerald-400">rocket_launch</span>
-          <span>Deploy</span>
-        </button>
-        <button onclick="openShortcutsModal()" class="px-2 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1 transition" title="Keyboard Shortcuts (?)">
-          <span class="material-symbols-outlined text-[16px]">keyboard</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Workspace Main Body: PRIORITIZED 2-COLUMN LAYOUT -->
-    <div class="flex-1 flex overflow-hidden">
-      
-      <!-- COLUMN 1: AI Prompt Studio & Assistant (Left, 380px) -->
-      <aside class="w-96 border-r border-white/10 bg-[#0c101b] flex flex-col shrink-0">
-        
-        <!-- AI Assistant Top Bar -->
-        <div class="h-10 px-3.5 border-b border-white/10 flex items-center justify-between text-xs text-slate-400 bg-[#090d16] shrink-0">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span class="font-bold text-white flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-[16px] text-sky-400">terminal</span>
-              AI Studio
-            </span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="toggleFileTreeDrawer()" id="btnToggleFileTree" class="text-[10px] font-semibold text-slate-400 hover:text-white px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1" title="Toggle File Tree">
-              <span class="material-symbols-outlined text-[14px] text-sky-400">folder_open</span>
-              <span id="fileTreeBtnText">Files</span>
-            </button>
-            <button onclick="openPlanUpgradeModal()" id="wsQuotaPill" class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/30 hover:bg-sky-500/20 transition cursor-pointer" title="Daily AI Generation Quota">5/5 left</button>
-            <span id="wsAiBadge" class="hidden text-[10px] font-mono text-slate-400">Stream</span>
-          </div>
-        </div>
-
-        <!-- Collapsible File Explorer Drawer inside Left Panel -->
-        <div id="wsExplorerDrawer" class="hidden border-b border-white/10 bg-[#090d16] max-h-48 overflow-y-auto p-2 space-y-1">
-          <div class="flex items-center justify-between px-1.5 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            <span>Project Files</span>
-            <button onclick="openNewFileModal()" class="text-sky-400 hover:underline flex items-center gap-1">
-              <i class="fa-solid fa-plus text-[9px]"></i> New File
-            </button>
-          </div>
-          <!-- File Explorer Tree List -->
-          <div id="wsExplorerList" class="space-y-0.5 text-xs select-none">
-            <!-- Populated via renderExplorerList() -->
-          </div>
-        </div>
-
-        <!-- AI Credentials Missing Warning Banner -->
-        <div id="aiWarningBanner" class="hidden p-2.5 bg-amber-500/10 border-b border-amber-500/20 text-xs text-amber-300 space-y-1">
-          <div class="font-bold flex items-center gap-1.5 text-[11px]">
-            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
-            AI Not Configured
-          </div>
-          <p class="text-[10px] text-amber-200/80 leading-tight">
-            Add <code class="px-1 py-0.5 rounded bg-black/40 text-amber-100 font-mono">GEMINI_API_KEY</code> to <code class="font-mono">.env</code>.
-          </p>
-        </div>
-
-        <!-- Chat Messages History (Full Height Scrollable) -->
-        <div id="wsChatMessages" class="flex-1 overflow-y-auto p-3.5 space-y-3.5 text-xs">
-          <!-- Populated from SQLite messages table -->
-        </div>
-
-        <!-- Prompt Suggestions Chips & Input Form (Bottom) -->
-        <div class="p-3 border-t border-white/10 bg-[#090d16] space-y-2 shrink-0">
-          <!-- Quick Action Chips -->
-          <div class="flex items-center gap-1 overflow-x-auto pb-1 text-[10px] no-scrollbar">
-            <button onclick="insertPromptChip('Add dark mode toggle and polish colors')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 whitespace-nowrap transition">+ Dark Mode</button>
-            <button onclick="insertPromptChip('Make the layout responsive for mobile & tablet')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 whitespace-nowrap transition">+ Responsive</button>
-            <button onclick="insertPromptChip('Add search bar and category filter')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 whitespace-nowrap transition">+ Search & Filter</button>
-            <button onclick="insertPromptChip('Add smooth animations and button micro-interactions')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 whitespace-nowrap transition">+ Animations</button>
-          </div>
-
-          <form id="wsChatForm" onsubmit="handleSendChatMessage(event)" class="space-y-1.5">
-            <div class="bg-[#111622] border border-white/10 rounded-xl p-2.5 focus-within:border-sky-400 transition">
-              <textarea 
-                id="wsChatInput" 
-                rows="2" 
-                placeholder="Ask Buildment to update your app (e.g. 'Add export CSV button and dark theme')..." 
-                class="w-full bg-transparent text-xs text-white placeholder-slate-500 resize-none leading-relaxed p-0 border-none outline-none focus:outline-none focus:ring-0"
-              ></textarea>
-              <div class="flex items-center justify-between pt-2 border-t border-white/5">
-                <span class="text-[9px] text-slate-500 font-mono">Press Ctrl+Enter to send</span>
-                <button 
-                  type="submit" 
-                  id="wsSendBtn" 
-                  class="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 disabled:opacity-40 shadow-sm"
-                >
-                  <span class="material-symbols-outlined text-[14px]">arrow_upward</span>
-                  <span>Send</span>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </aside>
-
-      <!-- COLUMN 2: LARGE LIVE PREVIEW & WORKSPACE HUB (Right, Flexible) -->
-      <main class="flex-1 flex flex-col bg-[#06090f] overflow-hidden">
-        
-        <!-- Top Switcher Bar: Preview vs Code Editor vs Console vs AI Debugger -->
-        <div class="h-10 border-b border-white/10 bg-[#0c101b] px-3 flex items-center justify-between shrink-0 select-none">
-          
-          <!-- View Mode Tabs -->
-          <div class="flex items-center gap-1 bg-[#111622] p-0.5 rounded-lg border border-white/10 text-xs">
-            <button onclick="switchWorkspaceRightTab('preview')" id="tabPreviewBtn" class="px-3 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition">
-              <span class="material-symbols-outlined text-[14px] text-emerald-400">play_circle</span>
-              <span>Live Preview</span>
-            </button>
-            <button onclick="switchWorkspaceRightTab('editor')" id="tabEditorBtn" class="px-3 py-1 rounded font-semibold text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-              <span class="material-symbols-outlined text-[14px] text-sky-400">code</span>
-              <span>Code Editor</span>
-            </button>
-            <button onclick="switchWorkspaceRightTab('console')" id="tabConsoleBtn" class="px-3 py-1 rounded font-semibold text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-              <span class="material-symbols-outlined text-[14px] text-sky-400">terminal</span>
-              <span>Console</span>
-              <span id="logCountPill" class="text-[9px] font-mono px-1 rounded-full bg-white/10 text-slate-300">0</span>
-            </button>
-            <button onclick="switchWorkspaceRightTab('debugger')" id="tabDebuggerBtn" class="px-3 py-1 rounded font-semibold text-slate-400 hover:text-white flex items-center gap-1.5 transition relative">
-              <span class="material-symbols-outlined text-[14px] text-amber-400">auto_fix_high</span>
-              <span>AI Debugger</span>
-              <span id="diagAlertPill" class="hidden w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-            </button>
-          </div>
-
-          <!-- Viewport Switchers & Live Preview Tools (Visible in Preview Mode) -->
-          <div id="previewViewportControls" class="flex items-center gap-2">
-            <div class="flex items-center gap-1 bg-[#111622] p-0.5 rounded-lg border border-white/10 text-xs">
-              <button onclick="setPreviewViewport('desktop')" id="vpDeskBtn" class="p-1 px-2.5 rounded font-semibold bg-white/15 text-white flex items-center gap-1" title="Desktop View (100%)">
-                <span class="material-symbols-outlined text-[15px]">desktop_windows</span>
-                <span class="text-[10px] hidden sm:inline">Desktop</span>
-              </button>
-              <button onclick="setPreviewViewport('tablet')" id="vpTabBtn" class="p-1 px-2.5 rounded font-semibold text-slate-400 hover:text-white flex items-center gap-1" title="Tablet View (768px)">
-                <span class="material-symbols-outlined text-[15px]">tablet</span>
-                <span class="text-[10px] hidden sm:inline">Tablet</span>
-              </button>
-              <button onclick="setPreviewViewport('mobile')" id="vpMobBtn" class="p-1 px-2.5 rounded font-semibold text-slate-400 hover:text-white flex items-center gap-1" title="Mobile View (375px)">
-                <span class="material-symbols-outlined text-[15px]">smartphone</span>
-                <span class="text-[10px] hidden sm:inline">Mobile</span>
-              </button>
-            </div>
-            <button onclick="refreshPreviewIframe()" class="p-1.5 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs" title="Reload Preview Frame">
-              <i class="fa-solid fa-rotate-right text-[10px]"></i>
-            </button>
-            <button onclick="openExternalPreview()" class="p-1.5 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs" title="Open Preview in New Window">
-              <span class="material-symbols-outlined text-[15px]">open_in_new</span>
-            </button>
-          </div>
-
-          <!-- Console actions (visible in Console tab) -->
-          <div id="consoleActionControls" class="hidden flex items-center gap-2">
-            <button onclick="clearRuntimeLogs()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
-              <i class="fa-solid fa-trash-can text-[10px]"></i>
-              <span>Clear</span>
-            </button>
-            <button onclick="fetchRuntimeLogs()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
-              <i class="fa-solid fa-rotate-right text-[10px]"></i>
-              <span>Refresh</span>
-            </button>
-          </div>
-
-          <!-- Debugger actions (visible in Debugger tab) -->
-          <div id="debuggerActionControls" class="hidden flex items-center gap-2">
-            <button onclick="fetchDiagnostics()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/5 flex items-center gap-1 transition">
-              <i class="fa-solid fa-rotate-right text-[10px]"></i>
-              <span>Refresh Errors</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Build Error Alert Banner (Shown if runtime fails) -->
-        <div id="runtimeErrorBanner" class="hidden p-3 bg-red-500/10 border-b border-red-500/20 text-xs text-red-300 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-exclamation text-red-400 text-sm"></i>
-            <div>
-              <div class="font-bold">Build or Runtime Failure</div>
-              <div id="runtimeErrorMessage" class="text-[11px] text-red-200/80">Application failed health check.</div>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="openDebuggerWithActiveError()" class="px-3 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-xs border border-amber-500/30 flex items-center gap-1.5 transition shadow-sm">
-              <span class="material-symbols-outlined text-[14px]">auto_fix_high</span>
-              <span>Debug with AI</span>
-            </button>
-            <button onclick="handleRestartRuntime()" class="px-3 py-1 rounded bg-red-500/20 hover:bg-red-500/30 text-white font-semibold text-xs border border-red-500/30 transition">
-              Retry Build
-            </button>
-          </div>
-        </div>
-
-        <!-- SUB-VIEW 1: LARGE LIVE PREVIEW FRAME CONTAINER -->
-        <div id="previewFrameContainer" class="flex-1 p-4 overflow-auto flex items-center justify-center relative bg-[#06090f]">
-          
-          <!-- Generating / Loading Overlay -->
-          <div id="wsGeneratingOverlay" class="hidden absolute inset-0 bg-[#090d16]/90 backdrop-blur-xs flex flex-col items-center justify-center z-20">
-            <div class="w-12 h-12 rounded-2xl bg-[#111622] border border-sky-400/30 flex items-center justify-center mb-4 shadow-[0_0_25px_rgba(56,189,248,0.3)]">
-              <div class="w-6 h-6 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin"></div>
-            </div>
-            <h4 class="text-sm font-bold text-white mb-1" id="wsGeneratingTitle">Synthesizing application...</h4>
-            <p class="text-xs text-slate-400 font-mono" id="wsGeneratingDetails">Streaming code from AI model</p>
-          </div>
-
-          <!-- Runtime Stopped Placeholder -->
-          <div id="runtimeStoppedPlaceholder" class="hidden absolute inset-0 bg-[#06090f] flex flex-col items-center justify-center z-10 text-center p-6">
-            <div class="w-14 h-14 rounded-2xl bg-[#111622] border border-white/10 flex items-center justify-center text-slate-400 mb-3 shadow-md">
-              <span class="material-symbols-outlined text-[28px]">power_settings_new</span>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">Preview Session Stopped</h3>
-            <p class="text-xs text-slate-400 max-w-sm mb-4 leading-relaxed">
-              The preview runtime is currently stopped to save memory. Click Start to compile and launch the application in an isolated sandbox.
+</div>
+<div class="p-5 flex flex-col flex-1 justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base text-white font-semibold">Modern Marketplace</h3>
+<span class="material-symbols-outlined text-sky-400 text-[18px]">storefront</span>
+</div>
+<p class="text-xs text-slate-400 mb-5 leading-relaxed">
+              Multi-vendor merchant stores with instant faceted filtering, digital checkout carts, and payouts.
             </p>
-            <button onclick="handleStartRuntime()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg transition">
-              <i class="fa-solid fa-play text-[10px]"></i>
-              <span>Start Preview</span>
-            </button>
-          </div>
-
-          <!-- Sandboxed Iframe (Execution Security Enforced with CSP and no-allow-same-origin) -->
-          <iframe 
-            id="wsPreviewIframe" 
-            sandbox="allow-scripts allow-forms allow-modals"
-            class="viewport-desktop bg-white border border-white/10 shadow-2xl transition-all duration-300"
-          ></iframe>
-        </div>
-
-        <!-- SUB-VIEW 2: CODE EDITOR CONTAINER (Full width when active) -->
-        <div id="editorContainer" class="hidden flex-1 flex flex-col bg-[#090d16] overflow-hidden">
-          <!-- Editor Top Bar with File Tabs -->
-          <div id="wsFilesTabList" class="h-9 px-2 bg-[#0c101b] border-b border-white/10 flex items-center gap-1 overflow-x-auto select-none">
-            <!-- Populated by renderFileTabs() -->
-          </div>
-
-          <!-- Editor Toolbar (Path, Versions, Save) -->
-          <div class="h-8 px-3 border-b border-white/5 flex items-center justify-between text-[11px] text-slate-400 bg-[#06090f]">
-            <div class="flex items-center gap-2 truncate">
-              <span id="currentEditingPath" class="font-mono text-sky-300 font-semibold truncate">index.html</span>
-              <span id="unsavedIndicator" class="hidden text-amber-400 text-[10px] font-bold">● Unsaved edits</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="openVersionHistoryModal()" class="text-slate-400 hover:text-white px-2 py-0.5 rounded hover:bg-white/10 flex items-center gap-1 transition" title="Inspect prior versions">
-                <i class="fa-solid fa-clock-rotate-left text-[10px]"></i>
-                <span>Revisions</span>
-              </button>
-              <button id="saveFileBtn" onclick="saveActiveFileContent()" class="px-2.5 py-0.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-semibold text-[11px] flex items-center gap-1 transition">
-                <i class="fa-regular fa-floppy-disk text-[10px]"></i>
-                <span>Save</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Code Editor Body -->
-          <div class="flex-1 relative overflow-hidden bg-[#06090f] flex flex-col">
-            <textarea 
-              id="wsCodeEditor" 
-              spellcheck="false" 
-              class="flex-1 w-full bg-[#06090f] p-3 font-mono text-xs text-slate-200 leading-relaxed resize-none border-none outline-none focus:outline-none focus:ring-0 select-text"
-              placeholder="Select or create a file to view and edit code..."
-            ></textarea>
-          </div>
-
-          <!-- Editor Footer Status -->
-          <div class="h-6 px-3 bg-[#0c101b] border-t border-white/10 flex items-center justify-between text-[10px] text-slate-500 font-mono select-none">
-            <span id="editorFileInfo">UTF-8 • Editable</span>
-            <span id="editorCursorInfo">Ln 1, Col 1</span>
-          </div>
-        </div>
-
-        <!-- SUB-VIEW 3: RUNTIME CONSOLE & LOGS PANEL -->
-        <div id="runtimeConsoleContainer" class="hidden flex-1 flex flex-col bg-[#06090f] font-mono text-xs overflow-hidden">
-          <div class="p-2 border-b border-white/10 bg-[#0c101b] flex items-center justify-between text-[11px] text-slate-400">
-            <span class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-[15px] text-sky-400">security</span>
-              <span>Isolated Runtime Logs (Container / Sandbox Output)</span>
-            </span>
-            <span class="text-[10px] text-slate-500">Live stdout/stderr stream</span>
-          </div>
-          <div id="wsConsoleLogs" class="flex-1 p-3 overflow-y-auto space-y-1 leading-relaxed">
-            <div class="text-slate-500 italic">No logs recorded yet. Start preview to view build events and console output.</div>
-          </div>
-        </div>
-
-        <!-- SUB-VIEW 4: AI DEBUGGER & AUTO-REPAIR PANEL -->
-        <div id="runtimeDebuggerContainer" class="hidden flex-1 flex flex-col bg-[#06090f] text-xs overflow-hidden">
-          <!-- Debugger Header -->
-          <div class="p-3 border-b border-white/10 bg-[#0c101b] flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-2.5">
-              <div class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs shadow-sm">
-                <i class="fa-solid fa-bug"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-white text-xs">AI Debugging & Automatic Repair Agent</h3>
-                <p class="text-[10px] text-slate-400">Targeted error diagnosis, non-destructive patch generation, and isolated retesting.</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span id="dbgAttemptsBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300">Attempts: 0/3</span>
-            </div>
-          </div>
-
-          <div class="flex-1 overflow-y-auto p-4 space-y-4">
-            
-            <!-- Active Error / Diagnostic Card -->
-            <div class="bg-[#111622] border border-white/10 rounded-xl p-3.5 space-y-2.5">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span id="dbgErrorTypeBadge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/30">RUNTIME_ERROR</span>
-                  <span id="dbgFileContext" class="font-mono text-[11px] text-sky-300">app.js:1</span>
-                </div>
-                <span id="dbgErrorTime" class="text-[10px] text-slate-500 font-mono">Just now</span>
-              </div>
-              <div id="dbgErrorMessage" class="p-2.5 rounded-lg bg-[#06090f] border border-white/5 font-mono text-[11px] text-red-300 whitespace-pre-wrap leading-relaxed select-text">
-                No active errors detected in this project.
-              </div>
-              <div class="flex items-center justify-between pt-1">
-                <span class="text-[10px] text-slate-500">Telemetry collected from sandboxed preview</span>
-                <button id="btnTriggerDiagnosis" onclick="triggerAIDiagnosis()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow transition disabled:opacity-50">
-                  <span class="material-symbols-outlined text-[15px]">auto_fix_high</span>
-                  <span>Diagnose & Propose Fix</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Analyzing / Diagnosing Indicator -->
-            <div id="dbgAnalyzingIndicator" class="hidden p-6 text-center space-y-2.5 bg-[#111622]/50 border border-amber-500/20 rounded-xl">
-              <div class="w-8 h-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin mx-auto"></div>
-              <div class="font-bold text-white text-xs">AI Agent Analyzing Error Context...</div>
-              <p class="text-[11px] text-slate-400 font-mono">Examining source files & stack trace to synthesize a safe, targeted patch.</p>
-            </div>
-
-            <!-- AI Diagnosis & Proposed Patch Card (Shown after diagnosis) -->
-            <div id="dbgProposalCard" class="hidden bg-[#111622] border border-amber-500/30 rounded-xl p-4 space-y-3.5 shadow-xl">
-              <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-amber-400 text-[18px]">stethoscope</span>
-                  <span class="font-bold text-white text-xs">AI Diagnosis & Root Cause</span>
-                </div>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">READY FOR REVIEW</span>
-              </div>
-
-              <!-- Diagnosis Summary -->
-              <div class="space-y-1">
-                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Diagnosis</h4>
-                <p id="dbgDiagnosisText" class="text-xs text-slate-200 leading-relaxed bg-[#090d16] p-2.5 rounded-lg border border-white/5">
-                  Diagnosis details...
-                </p>
-              </div>
-
-              <!-- Root Cause -->
-              <div class="space-y-1">
-                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Root Cause & Location</h4>
-                <p id="dbgRootCauseText" class="text-xs text-slate-300 font-mono bg-[#090d16] p-2 rounded-lg border border-white/5">
-                  File and line...
-                </p>
-              </div>
-
-              <!-- Rationale -->
-              <div class="space-y-1">
-                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Repair Rationale</h4>
-                <p id="dbgReasoningText" class="text-xs text-slate-400 leading-relaxed bg-[#090d16] p-2.5 rounded-lg border border-white/5">
-                  Explanation...
-                </p>
-              </div>
-
-              <!-- Proposed Patch (Diff View) -->
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Proposed Patch</h4>
-                    <span id="dbgDiffSummary" class="text-[10px] font-mono text-sky-300 font-semibold px-1.5 py-0.2 rounded bg-sky-950/40 border border-sky-500/20">+0 / -0 lines</span>
-                  </div>
-                  <!-- Split vs Unified View Switcher -->
-                  <div class="flex items-center bg-[#090d16] p-0.5 rounded-lg border border-white/10 text-[10px] font-semibold">
-                    <button id="btnDiffSplit" onclick="setDiffMode('split')" class="px-2 py-0.5 rounded text-white bg-white/10 transition flex items-center gap-1">
-                      <i class="fa-solid fa-table-columns text-[9px]"></i>
-                      <span>Split</span>
-                    </button>
-                    <button id="btnDiffUnified" onclick="setDiffMode('unified')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white transition flex items-center gap-1">
-                      <i class="fa-solid fa-bars text-[9px]"></i>
-                      <span>Unified</span>
-                    </button>
-                  </div>
-                </div>
-                <div id="dbgDiffViewer" class="bg-[#06090f] border border-white/10 rounded-lg font-mono text-[11px] overflow-hidden leading-relaxed select-text max-h-72 flex flex-col">
-                  <!-- Diff lines populated via renderDiffViewer() -->
-                </div>
-              </div>
-
-              <!-- Action Bar -->
-              <div class="flex items-center justify-between pt-2 border-t border-white/10">
-                <button onclick="handleRejectProposal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition">
-                  Reject Fix
-                </button>
-                <button id="btnApplyRepair" onclick="handleApplyRepair()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg transition">
-                  <span class="material-symbols-outlined text-[16px]">check</span>
-                  <span>Apply Fix & Retest</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Retest Outcome Banner -->
-            <div id="dbgRetestBanner" class="hidden p-3.5 rounded-xl border space-y-1.5">
-              <!-- Dynamically populated with retest outcome -->
-            </div>
-
-            <!-- Safety Checkpoints & Rollback History -->
-            <div class="border-t border-white/10 pt-3 space-y-2">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Safety Checkpoints (Rollback)</span>
-                <button onclick="loadCheckpointsList()" class="text-slate-500 hover:text-white text-[11px]" title="Refresh Checkpoints">
-                  <i class="fa-solid fa-rotate-right"></i>
-                </button>
-              </div>
-              <div id="dbgCheckpointsList" class="space-y-1 text-xs">
-                <!-- Checkpoints populated dynamically -->
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </main>
-
-    </div>
-  </div>
-
-  <!-- ======================================================== -->
-  <!-- 3. MODALS (Preserving All Original DOM IDs & Functionality) -->
-  <!-- ======================================================== -->
-
-  <!-- Modal A: New Project Modal -->
-  <div id="newProjectModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-lg w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100">
-      <button onclick="closeNewProjectModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[20px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-400/30 text-sky-400 flex items-center justify-center text-sm shadow-md">
-          <span class="material-symbols-outlined text-[18px]">terminal</span>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold text-white">Create New Project</h3>
-          <p class="text-[11px] text-slate-400">Stored in persistent local SQLite database.</p>
-        </div>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Project Name *</label>
-          <input 
-            type="text" 
-            id="modalProjectName" 
-            placeholder="e.g. Modern Landing Page" 
-            class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none"
-          />
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Initial Prompt (Optional)</label>
-          <textarea 
-            id="modalProjectPrompt" 
-            rows="3" 
-            placeholder="What should this application do? Buildment will generate your initial code automatically." 
-            class="w-full bg-[#090d16] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:border-sky-400 resize-none outline-none leading-relaxed"
-          ></textarea>
-        </div>
-
-        <!-- Inspiration Chips inside Modal -->
-        <div class="flex items-center gap-1.5 flex-wrap text-[10px]">
-          <span class="text-slate-500">Presets:</span>
-          <button type="button" onclick="document.getElementById('modalProjectPrompt').value='A SaaS subscription pricing page with monthly/annual toggle and FAQ accordion'; document.getElementById('modalProjectName').value='Pricing Page';" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5">+ Pricing Page</button>
-          <button type="button" onclick="document.getElementById('modalProjectPrompt').value='A clean developer documentation site with searchable navigation and code blocks'; document.getElementById('modalProjectName').value='Docs Portal';" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5">+ Docs Portal</button>
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/5">
-          <button onclick="closeNewProjectModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">
-            Cancel
+</div>
+<button class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-400/40 text-slate-200 hover:text-sky-300 text-xs font-semibold transition-all" type="button">
+            Use This Template
           </button>
-          <button onclick="handleCreateProjectFromModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-bold text-xs transition shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-            Create Project
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal B: New File Modal -->
-  <div id="newFileModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-sm w-full p-5 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100">
-      <button onclick="closeNewFileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-2.5 mb-3">
-        <span class="material-symbols-outlined text-sky-400 text-lg">note_add</span>
-        <h3 class="text-sm font-bold text-white">Create New File</h3>
-      </div>
-      <p class="text-[11px] text-slate-400 mb-4">
-        Allowed extensions: <code class="font-mono text-sky-300">.html, .css, .js, .json, .md, .svg</code>
-      </p>
-
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">File Path / Name *</label>
-          <input 
-            type="text" 
-            id="modalFilePathInput" 
-            placeholder="e.g. styles.css or components/card.js" 
-            class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 font-mono outline-none"
-          />
-          <div id="filePathValidationError" class="hidden mt-1 text-[10px] text-red-400"></div>
-        </div>
-        <div class="flex items-center justify-end gap-2 pt-2">
-          <button onclick="closeNewFileModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">
-            Cancel
-          </button>
-          <button onclick="handleConfirmCreateFile()" class="px-4 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
-            Create File
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal C: Version History / Revisions Modal -->
-  <div id="versionHistoryModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-lg w-full p-5 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col max-h-[80vh]">
-      <button onclick="closeVersionHistoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-2.5 mb-2">
-        <span class="material-symbols-outlined text-sky-400 text-lg">history</span>
-        <div>
-          <h3 class="text-sm font-bold text-white">File Version History</h3>
-          <p class="text-[11px] text-slate-400 font-mono" id="versionModalFilePath">index.html</p>
-        </div>
-      </div>
-
-      <div class="flex-1 overflow-y-auto my-3 border border-white/10 rounded-xl divide-y divide-white/5 bg-[#090d16]" id="versionHistoryList">
-        <!-- Populated via renderVersionHistory() -->
-      </div>
-
-      <div class="flex items-center justify-between pt-2 text-[11px] text-slate-400">
-        <span>Snapshots are recorded automatically on every save.</span>
-        <button onclick="closeVersionHistoryModal()" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal D: Project Version History & Restore Modal -->
-  <div id="projectHistoryModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-2xl w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col max-h-[85vh]">
-      <button onclick="closeProjectHistoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-white/10">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center">
-            <span class="material-symbols-outlined text-sm">history_edu</span>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <span>Project Version History</span>
-              <span id="projHistCount" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300">0 versions</span>
-            </h3>
-            <p class="text-[11px] text-slate-400">Track meaningful changes, restore prior states atomically, and inspect Git commit history.</p>
-          </div>
-        </div>
-        <button onclick="openCreateVersionPrompt()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-sky-400 to-cyan-400 text-slate-950 font-semibold text-xs transition flex items-center gap-1.5 shadow-sm">
-          <i class="fa-solid fa-plus text-[10px]"></i>
-          <span>Save Version</span>
-        </button>
-      </div>
-
-      <!-- Quick Version Creation Input (Collapsible) -->
-      <div id="createVersionBox" class="hidden mt-3 p-3 rounded-xl bg-[#090d16] border border-sky-500/30 space-y-2">
-        <div class="flex items-center justify-between text-xs">
-          <span class="font-bold text-sky-300">Commit New Project Snapshot</span>
-          <button onclick="toggleCreateVersionBox(false)" class="text-slate-500 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <input 
-          type="text" 
-          id="customVersionSummary" 
-          placeholder="Version summary (e.g. Added responsive navbar and cart modal)..." 
-          class="w-full bg-[#111622] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none"
-        />
-        <div class="flex items-center justify-end gap-2">
-          <button onclick="toggleCreateVersionBox(false)" class="px-3 py-1 rounded text-xs text-slate-400 hover:text-white">Cancel</button>
-          <button onclick="submitManualVersion()" class="px-3 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center gap-1">
-            <i class="fa-solid fa-check text-[10px]"></i>
-            <span>Commit Snapshot</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Version List Container -->
-      <div class="flex-1 overflow-y-auto my-3 border border-white/10 rounded-xl divide-y divide-white/5 bg-[#090d16] p-1" id="projectVersionList">
-        <div class="p-6 text-center text-xs text-slate-500">Loading version history...</div>
-      </div>
-
-      <!-- Footer Info & Actions -->
-      <div class="flex items-center justify-between pt-2 border-t border-white/5 text-[11px] text-slate-400">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-emerald-400 text-[16px]">verified_user</span>
-          <span>Restores create a safety checkpoint before reverting files.</span>
-        </div>
-        <button onclick="closeProjectHistoryModal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal E: Authentication Modal (Login / Register / Migration) -->
-  <div id="authModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-sm w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col">
-      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-2.5 mb-4">
-        <div class="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-400/30 text-sky-400 font-extrabold flex items-center justify-center text-sm shadow-md">
-          <span class="material-symbols-outlined text-[18px]">terminal</span>
-        </div>
-        <div>
-          <h3 id="authModalTitle" class="text-sm font-bold text-white">Account Authentication</h3>
-          <p id="authModalSub" class="text-[11px] text-slate-400">Secure Argon2id Authentication</p>
-        </div>
-      </div>
-
-      <!-- Auth Tabs -->
-      <div class="flex border-b border-white/10 mb-4 text-xs">
-        <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 border-b-2 border-sky-400 text-white font-bold transition">
-          Log In
-        </button>
-        <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 border-b-2 border-transparent text-slate-400 hover:text-white font-medium transition">
-          Register
-        </button>
-        <button id="authTabMigrate" onclick="switchAuthTab('migrate')" class="hidden flex-1 pb-2 border-b-2 border-transparent text-amber-400 hover:text-amber-300 font-medium transition">
-          Set Password
-        </button>
-      </div>
-
-      <!-- Auth Error Banner -->
-      <div id="authErrorBanner" class="hidden mb-3 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-[11px] text-red-300 flex items-start gap-2">
-        <i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0"></i>
-        <span id="authErrorMessage"></span>
-      </div>
-
-      <!-- Login Form -->
-      <form id="authLoginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Username or Email</label>
-          <input type="text" id="loginIdentifier" required placeholder="Enter username or email" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Password</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition shadow-md">
-          Sign In
-        </button>
-      </form>
-
-      <!-- Register Form -->
-      <form id="authRegisterForm" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-3">
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Username</label>
-          <input type="text" id="regUsername" required placeholder="e.g. alex_dev" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Email (Optional)</label>
-          <input type="email" id="regEmail" placeholder="alex@company.com" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Password</label>
-          <input type="password" id="regPassword" required placeholder="Min 8 chars, 1 letter, 1 number" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <button type="submit" id="btnRegSubmit" class="w-full py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-slate-950 font-bold text-xs transition shadow-md">
-          Create Account
-        </button>
-      </form>
-
-      <!-- Migration Form (Set Password) -->
-      <form id="authMigrateForm" onsubmit="handleMigrateSubmit(event)" class="hidden space-y-3">
-        <p class="text-[11px] text-amber-300/90 leading-relaxed">
-          Your account was created without a password. Protect your account with an Argon2id password hash before public deployment.
+</div>
+</div>
+</div>
+</section>
+<!-- Final High Impact CTA Banner with Cybernetic Glow -->
+<section class="max-w-6xl mx-auto px-6 lg:px-8 pb-16 w-full relative">
+<div class="relative rounded-2xl bg-gradient-to-b from-[#111726] to-[#0a0e17] border border-white/15 p-8 sm:p-12 shadow-[0_10px_50px_rgba(0,0,0,0.8)] flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden">
+<!-- Ambient Cyan Radiance in Background -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-sky-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="absolute -left-20 -top-20 w-80 h-80 bg-sky-500/15 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="flex flex-col gap-2 max-w-xl text-left relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+<span class="text-xs text-sky-400 uppercase tracking-widest font-semibold">Immediate Execution</span>
+</div>
+<h3 class="text-2xl sm:text-3xl text-white font-bold tracking-tight">
+          Start building your next idea today. Free tier included.
+        </h3>
+<p class="text-sm text-slate-400 leading-relaxed">
+          No credit card required. Generate full applications, sync to GitHub, and deploy to your custom domain in minutes.
         </p>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">New Password</label>
-          <input type="password" id="migratePassword" required placeholder="Min 8 chars, 1 letter, 1 number" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Confirm New Password</label>
-          <input type="password" id="migrateConfirmPassword" required placeholder="••••••••" class="w-full bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-sky-400 outline-none" />
-        </div>
-        <button type="submit" id="btnMigrateSubmit" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-md">
-          Save & Lock In Password
-        </button>
-      </form>
-    </div>
-  </div>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0 relative z-10">
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-sm transition-all shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.6)]" data-path="sign-up" href="#">
+          Get Started Free
+        </a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white font-medium text-sm transition-colors" data-path="contact" href="#">
+          Book Demo
+        </a>
+</div>
+</div>
+</section>
+</div>
+<script>
+  (function () {
+    const promptInput = document.getElementById('heroPromptInput');
+    const generateBtn = document.getElementById('generateAppBtn');
+    const chips = document.querySelectorAll('.prompt-chip');
+    const modelBtn = document.getElementById('modelSelectBtn');
+    const modelLabel = document.getElementById('selectedModelLabel');
 
-  <!-- Modal F: Plan Tiers, Quota & Token Usage Metering Modal -->
-  <div id="planUpgradeModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-2xl w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col max-h-[90vh]">
-      <button onclick="closePlanUpgradeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
+    if (chips && promptInput) {
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const prompt = chip.getAttribute('data-prompt');
+          if (prompt) {
+            promptInput.value = prompt;
+            promptInput.focus();
+          }
+        });
+      });
+    }
 
-      <!-- Modal Header -->
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-400/30 text-amber-400 font-extrabold flex items-center justify-center text-lg shadow-md shrink-0">
-          <span class="material-symbols-outlined text-[22px]">bolt</span>
-        </div>
-        <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            AI Quotas & Plan Tiers
-            <span id="modalCurrentTierBadge" class="px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">Free Plan</span>
-          </h3>
-          <p class="text-xs text-slate-400">Manage LLM daily generation allowances, token budgets, and view live usage telemetry.</p>
-        </div>
-      </div>
+    if (generateBtn && promptInput) {
+      generateBtn.addEventListener('click', () => {
+        const text = promptInput.value.trim();
+        if (!text) {
+          promptInput.focus();
+          return;
+        }
+        generateBtn.innerHTML = `
+          <span class="w-3.5 h-3.5 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin"></span>
+          <span>Synthesizing...</span>
+        `;
+        setTimeout(() => {
+          generateBtn.innerHTML = `
+            <span>Generated! →</span>
+          `;
+        }, 1200);
+      });
+    }
 
-      <!-- Real-time Quota Stats Banner -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 p-3 rounded-xl bg-[#090d16] border border-white/5 text-xs font-mono">
-        <div class="space-y-0.5">
-          <div class="text-[10px] text-slate-500 uppercase">Generations</div>
-          <div id="mStatsGenerations" class="font-bold text-white text-sm">0 / 5</div>
-          <div id="mStatsGenerationsRem" class="text-[9px] text-sky-400">5 remaining</div>
-        </div>
-        <div class="space-y-0.5">
-          <div class="text-[10px] text-slate-500 uppercase">Chat Edits</div>
-          <div id="mStatsEdits" class="font-bold text-white text-sm">0 / 20</div>
-          <div id="mStatsEditsRem" class="text-[9px] text-emerald-400">20 remaining</div>
-        </div>
-        <div class="space-y-0.5">
-          <div class="text-[10px] text-slate-500 uppercase">Auto-Repairs</div>
-          <div id="mStatsRepairs" class="font-bold text-white text-sm">0 / 10</div>
-          <div id="mStatsRepairsRem" class="text-[9px] text-purple-400">10 remaining</div>
-        </div>
-        <div class="space-y-0.5">
-          <div class="text-[10px] text-slate-500 uppercase">Tokens Used</div>
-          <div id="mStatsTokens" class="font-bold text-white text-sm">0</div>
-          <div id="mStatsResetTime" class="text-[9px] text-amber-300"><i class="fa-regular fa-clock mr-1"></i>Resets 00:00 UTC</div>
-        </div>
-      </div>
+    const models = ['Claude 3.7 Sonnet', 'GPT-4o Architect', 'DeepSeek-R1 Full'];
+    let currentModelIndex = 0;
+    if (modelBtn && modelLabel) {
+      modelBtn.addEventListener('click', () => {
+        currentModelIndex = (currentModelIndex + 1) % models.length;
+        modelLabel.textContent = models[currentModelIndex];
+      });
+    }
+  })();
+</script></main><footer class="w-full bg-[#06090f] border-t border-white/10 pt-16 pb-12"><div class="max-w-7xl mx-auto px-6 lg:px-12"><div class="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12"><div class="col-span-2 flex flex-col gap-3"><div class="flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400"><span class="material-symbols-outlined text-[16px]">terminal</span></div><span class="text-base text-white font-semibold tracking-tight">Buildment</span></div><p class="text-xs text-slate-400 max-w-sm mt-1 leading-relaxed">Next-generation developer toolchain for shipping high-velocity web applications with surgical architectural clarity.</p><div class="flex items-center gap-2 mt-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Operational • v2.4.0</span></div></div><div class="flex flex-col gap-2.5"><span class="text-xs text-white uppercase tracking-wider font-semibold">Product</span><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="product" href="#">Platform Core</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="templates" href="#">Starters &amp; Templates</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="showcase" href="#">Showcase</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="pricing" href="#">Pricing</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="changelog" href="#">Release Notes</a></div><div class="flex flex-col gap-2.5"><span class="text-xs text-white uppercase tracking-wider font-semibold">Resources</span><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="documentation" href="#">Documentation</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="cli-guide" href="#">CLI Tooling</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="community" href="#">Community</a></div><div class="flex flex-col gap-2.5"><span class="text-xs text-white uppercase tracking-wider font-semibold">Company</span><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="about" href="#">About</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="privacy-policy" href="#">Privacy Policy</a><a class="text-xs text-slate-400 hover:text-sky-300 transition-colors" data-path="terms-of-service" href="#">Terms of Service</a></div></div><div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4"><p class="text-xs text-slate-500">© 2025 Buildment, Inc. All rights reserved.</p><div class="flex items-center gap-6"><a class="text-xs text-slate-500 hover:text-slate-300 transition-colors" data-path="privacy-policy" href="#">Privacy</a><a class="text-xs text-slate-500 hover:text-slate-300 transition-colors" data-path="terms-of-service" href="#">Terms</a><a class="text-xs text-slate-500 hover:text-slate-300 transition-colors" data-path="security" href="#">Security</a></div></div></div></footer>
 
-      <!-- Plan Comparison Cards (Free vs Pro) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 overflow-y-auto pr-1">
-        <!-- Free Tier Card -->
-        <div id="cardTierFree" class="p-4 rounded-xl border border-white/10 bg-[#090d16] flex flex-col justify-between space-y-3 relative">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-white text-sm">Free Starter</span>
-              <span id="badgeFreeActive" class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white/10 text-slate-300">Active</span>
-            </div>
-            <div class="text-xl font-extrabold text-white">$0 <span class="text-xs text-slate-500 font-normal">/ forever</span></div>
-            <p class="text-[11px] text-slate-400">Ideal for personal experimentation, learning, and lightweight prototyping.</p>
-            <ul class="text-xs text-slate-300 space-y-1.5 pt-2 border-t border-white/5">
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span><strong>5</strong> AI Generations per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span><strong>20</strong> Chat updates per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span><strong>10</strong> Automated repairs per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span><strong>100,000</strong> Tokens daily budget</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span>SQLite & Git Versioning</span></li>
-            </ul>
-          </div>
-          <button id="btnSwitchFree" onclick="handleSwitchPlan('free')" class="w-full py-2 rounded-xl text-xs font-bold transition border border-white/10 bg-white/5 text-slate-400 hover:text-white hover:bg-white/10">
-            Switch to Free
-          </button>
-        </div>
 
-        <!-- Pro Developer Card -->
-        <div id="cardTierPro" class="p-4 rounded-xl border border-sky-400/40 bg-gradient-to-b from-sky-950/20 to-[#090d16] flex flex-col justify-between space-y-3 relative shadow-lg shadow-sky-950/20">
-          <div class="absolute -top-2.5 right-4 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-sky-400 to-cyan-400 text-slate-950 shadow">
-            RECOMMENDED
-          </div>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-white text-sm">Pro Developer</span>
-              <span id="badgeProActive" class="hidden px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Active</span>
-            </div>
-            <div class="text-xl font-extrabold text-sky-300">Free Upgrade <span class="text-xs text-slate-500 font-normal">(Instant)</span></div>
-            <p class="text-[11px] text-slate-400">High-volume generative coding, deep auto-repair passes, and large codebases.</p>
-            <ul class="text-xs text-slate-200 space-y-1.5 pt-2 border-t border-white/5">
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[14px]">bolt</span><span><strong>100</strong> AI Generations per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[14px]">bolt</span><span><strong>500</strong> Chat updates per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[14px]">bolt</span><span><strong>200</strong> Automated repairs per day</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-[14px]">bolt</span><span><strong>2,000,000</strong> Tokens daily budget</span></li>
-              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-sky-400 text-[14px]">check</span><span>Priority synthesis queue</span></li>
-            </ul>
-          </div>
-          <button id="btnSwitchPro" onclick="handleSwitchPlan('pro')" class="w-full py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 shadow-md flex items-center justify-center gap-1.5">
-            <span class="material-symbols-outlined text-[15px]">bolt</span>
-            <span>Upgrade to Pro Developer</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- Expandable Usage History Logs -->
-      <div class="border-t border-white/10 pt-3">
-        <div class="flex items-center justify-between cursor-pointer py-1" onclick="toggleUsageLogsDrawer()">
-          <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sky-400 text-[16px]">monitoring</span>
-            Recent AI Usage Telemetry
-          </span>
-          <div class="flex items-center gap-2 text-slate-400 text-xs">
-            <span id="usageLogsCount" class="text-[10px] font-mono">0 requests</span>
-            <i id="usageLogsChevron" class="fa-solid fa-chevron-down text-[10px] transition-transform"></i>
-          </div>
-        </div>
 
-        <div id="usageLogsDrawer" class="hidden mt-2 max-h-40 overflow-y-auto rounded-xl border border-white/10 bg-[#090d16] p-2 divide-y divide-white/5 font-mono text-[10px]">
-          <div class="p-2 text-center text-slate-500">Loading usage history...</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- MODAL G: SHARE & DEPLOY -->
-  <div id="shareDeployModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-xl w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col max-h-[90vh]">
-      <button onclick="closeShareDeployModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
 
-      <!-- Modal Header -->
-      <div class="flex items-center gap-3 pb-4 border-b border-white/10">
-        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 flex items-center justify-center text-sm shadow-md">
-          <span class="material-symbols-outlined text-[20px]">cloud_upload</span>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <span>Share & Deploy Project</span>
-            <span id="shareModalProjectBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300">App</span>
-          </h3>
-          <p class="text-[11px] text-slate-400">Embed this app in your website or deploy it to Vercel, Netlify, or GitHub Pages in minutes.</p>
-        </div>
-      </div>
 
-      <!-- Navigation Tabs -->
-      <div class="flex items-center gap-2 border-b border-white/10 pt-3 pb-2 text-xs font-semibold">
-        <button id="btnTabShareEmbed" onclick="switchShareTab('embed')" class="px-3 py-1.5 rounded-lg bg-white/10 text-white flex items-center gap-1.5 transition">
-          <span class="material-symbols-outlined text-sky-400 text-[15px]">code</span>
-          <span>Embed & Link</span>
-        </button>
-        <button id="btnTabShareDeploy" onclick="switchShareTab('deploy')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-          <span class="material-symbols-outlined text-purple-400 text-[15px]">rocket_launch</span>
-          <span>Deploy Guides</span>
-        </button>
-        <button id="btnTabShareExport" onclick="switchShareTab('export')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-          <span class="material-symbols-outlined text-emerald-400 text-[15px]">download</span>
-          <span>Direct Exports</span>
-        </button>
-      </div>
 
-      <!-- Content Area -->
-      <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1 text-xs">
-        <!-- Tab 1: Embed & Link -->
-        <div id="paneShareEmbed" class="space-y-4">
-          <div class="space-y-1.5">
-            <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">Live Preview URL</label>
-            <div class="flex items-center gap-2">
-              <input id="sharePreviewUrlInput" type="text" readonly class="flex-1 bg-[#090d16] border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-sky-300 select-all" />
-              <button onclick="copyShareUrl()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs flex items-center gap-1.5 transition">
-                <i class="fa-regular fa-copy text-[11px]"></i>
-                <span id="copyUrlBtnText">Copy</span>
-              </button>
-              <button onclick="openExternalPreview()" class="px-3 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition">
-                <span class="material-symbols-outlined text-[15px]">open_in_new</span>
-                <span>Open</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between">
-              <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">HTML Iframe Embed Snippet</label>
-              <button onclick="copyEmbedSnippet()" class="text-[10px] text-sky-400 hover:underline flex items-center gap-1">
-                <i class="fa-regular fa-copy text-[10px]"></i>
-                <span id="copySnippetBtnText">Copy Embed Code</span>
-              </button>
-            </div>
-            <pre id="shareEmbedSnippet" class="p-3 bg-[#090d16] border border-white/10 rounded-xl font-mono text-[11px] text-slate-300 overflow-x-auto whitespace-pre-wrap select-all leading-relaxed"></pre>
-          </div>
-
-          <div class="p-3 rounded-xl bg-sky-950/20 border border-sky-500/20 text-sky-200/90 text-[11px] flex items-start gap-2.5">
-            <span class="material-symbols-outlined text-sky-400 text-[16px] mt-0.5 shrink-0">verified_user</span>
-            <div>
-              <span class="font-bold">Sandboxed by default:</span> Embed frames use <code class="font-mono bg-black/40 px-1 py-0.5 rounded text-sky-300">sandbox="allow-scripts allow-forms"</code> with Restrictive CSP preventing unauthorized access to host origins.
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 2: Deploy Guides -->
-        <div id="paneShareDeploy" class="hidden space-y-3.5">
-          <div class="p-3.5 rounded-xl border border-white/10 bg-[#090d16] space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded bg-black border border-white/20 flex items-center justify-center text-white text-[10px] font-bold">▲</div>
-                <span class="font-bold text-white text-xs">Vercel Deployment</span>
-              </div>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300">Fastest</span>
-            </div>
-            <p class="text-[11px] text-slate-400">Download the ZIP archive, extract the files, and run in your terminal:</p>
-            <div class="p-2 bg-[#06090f] rounded-lg border border-white/10 font-mono text-[11px] text-slate-300 flex items-center justify-between">
-              <code>npx vercel deploy --prod</code>
-              <button onclick="copyCommand('npx vercel deploy --prod')" class="text-slate-400 hover:text-white px-1.5 py-0.5 text-[10px]">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="p-3.5 rounded-xl border border-white/10 bg-[#090d16] space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded bg-sky-500/20 border border-sky-500/30 flex items-center justify-center text-sky-400 text-[10px] font-bold">N</div>
-                <span class="font-bold text-white text-xs">Netlify Drop (Zero Setup)</span>
-              </div>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">No CLI</span>
-            </div>
-            <p class="text-[11px] text-slate-400">1. Click <strong>Export ZIP</strong> to download your project archive.<br/>2. Open <a href="https://app.netlify.com/drop" target="_blank" class="text-sky-400 underline">app.netlify.com/drop</a>.<br/>3. Drag and drop your unzipped folder for instant global HTTPS hosting.</p>
-          </div>
-
-          <div class="p-3.5 rounded-xl border border-white/10 bg-[#090d16] space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <i class="fa-brands fa-github text-white text-base"></i>
-                <span class="font-bold text-white text-xs">GitHub Pages</span>
-              </div>
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300">Free</span>
-            </div>
-            <p class="text-[11px] text-slate-400">Push to a repository, go to <strong>Settings &gt; Pages</strong>, and select the <code class="font-mono bg-black/40 px-1 rounded text-sky-300">main / root</code> branch as your source.</p>
-          </div>
-        </div>
-
-        <!-- Tab 3: Direct Exports -->
-        <div id="paneShareExport" class="hidden space-y-3">
-          <div class="p-4 rounded-xl border border-white/10 bg-[#090d16] space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="font-bold text-white text-xs">Full ZIP Archive</h4>
-                <p class="text-[11px] text-slate-400">Includes all HTML, CSS, JS source files and an auto-generated README.md setup guide.</p>
-              </div>
-              <button onclick="downloadProjectZip()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shadow">
-                <span class="material-symbols-outlined text-[16px]">folder_zip</span>
-                <span>Download ZIP</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-xl border border-white/10 bg-[#090d16] space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="font-bold text-white text-xs">Single Standalone HTML Bundle</h4>
-                <p class="text-[11px] text-slate-400">Inlines all CSS and JavaScript into a single, self-contained HTML file runnable directly from any device or browser.</p>
-              </div>
-              <button onclick="downloadProjectBundle()" class="px-4 py-2 rounded-xl bg-white hover:bg-neutral-200 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shadow">
-                <span class="material-symbols-outlined text-[16px]">download</span>
-                <span>Download HTML</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="flex items-center justify-end pt-3 border-t border-white/10">
-        <button onclick="closeShareDeployModal()" class="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL H: ACCOUNT SETTINGS CENTER -->
-  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-xl w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col max-h-[85vh]">
-      <button onclick="closeSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-3 pb-3 border-b border-white/10 mb-4">
-        <div class="w-9 h-9 rounded-xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center text-sm shadow">
-          <i class="fa-solid fa-gear"></i>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold text-white">Account & Studio Settings</h3>
-          <p class="text-[11px] text-slate-400">Manage your user profile, security credentials, and AI providers.</p>
-        </div>
-      </div>
-
-      <div class="flex-1 overflow-y-auto space-y-4 text-xs pr-1">
-        <!-- Profile Card -->
-        <div class="p-4 rounded-xl bg-[#090d16] border border-white/10 space-y-3">
-          <h4 class="font-bold text-white flex items-center gap-1.5"><span class="material-symbols-outlined text-sky-400 text-[16px]">person</span> Profile Details</h4>
-          <div class="grid grid-cols-2 gap-3 text-slate-300">
-            <div>
-              <span class="text-slate-500 block text-[10px]">Username</span>
-              <span id="settingsUsername" class="font-mono font-semibold">Developer</span>
-            </div>
-            <div>
-              <span class="text-slate-500 block text-[10px]">Active Plan</span>
-              <span id="settingsPlan" class="font-mono text-sky-300 font-semibold uppercase">Free Tier</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Provider Status Card -->
-        <div class="p-4 rounded-xl bg-[#090d16] border border-white/10 space-y-3">
-          <h4 class="font-bold text-white flex items-center gap-1.5"><span class="material-symbols-outlined text-amber-400 text-[16px]">memory</span> AI Provider Integrations</h4>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between p-2 rounded-lg bg-[#06090f] border border-white/5">
-              <span class="font-mono">Google AI Studio (Gemini 2.5 Flash)</span>
-              <span id="settingsGeminiStatus" class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-emerald-500/20 text-emerald-400">CONNECTED</span>
-            </div>
-            <div class="flex items-center justify-between p-2 rounded-lg bg-[#06090f] border border-white/5">
-              <span class="font-mono">OpenAI (GPT-4o)</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-white/10 text-slate-400">OPTIONAL</span>
-            </div>
-            <div class="flex items-center justify-between p-2 rounded-lg bg-[#06090f] border border-white/5">
-              <span class="font-mono">Anthropic (Claude 3.5 Sonnet)</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-white/10 text-slate-400">OPTIONAL</span>
-            </div>
-          </div>
-          <p class="text-[10px] text-slate-400">Provider keys are loaded securely from the local <code class="font-mono text-sky-300">.env</code> configuration file.</p>
-        </div>
-
-        <!-- Security / Password Card -->
-        <div class="p-4 rounded-xl bg-[#090d16] border border-white/10 space-y-3">
-          <h4 class="font-bold text-white flex items-center gap-1.5"><span class="material-symbols-outlined text-emerald-400 text-[16px]">security</span> Security & Authentication</h4>
-          <p class="text-[11px] text-slate-400">Sessions are secured with Argon2id cryptographic password hashes and HTTP-only cookie rotation.</p>
-          <div class="flex items-center gap-2 pt-1">
-            <button onclick="closeSettingsModal(); openAuthModal('migrate');" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition">
-              Update Password
-            </button>
-            <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-300 font-semibold text-xs border border-red-500/20 transition">
-              Log Out All Sessions
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pt-3 border-t border-white/10 flex justify-end">
-        <button onclick="closeSettingsModal()" class="px-4 py-1.5 rounded-xl bg-white hover:bg-neutral-200 text-slate-950 font-bold text-xs transition">
-          Done
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL I: KEYBOARD SHORTCUTS -->
-  <div id="shortcutsModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0e1422] border border-sky-400/30 rounded-2xl max-w-md w-full p-6 shadow-[0_10px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(56,189,248,0.15)] relative text-slate-100 flex flex-col">
-      <button onclick="closeShortcutsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition">
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
-        <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center">
-          <span class="material-symbols-outlined text-[18px]">keyboard</span>
-        </div>
-        <div>
-          <h3 class="text-sm font-bold text-white">Keyboard Shortcuts</h3>
-          <p class="text-[11px] text-slate-400">Accelerate your workflow with quick keybindings.</p>
-        </div>
-      </div>
-
-      <div class="space-y-2 divide-y divide-white/5 text-xs">
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Save active file</span>
-          <div class="flex items-center gap-1 font-mono text-[11px]">
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Ctrl</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">S</kbd>
-          </div>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Submit prompt / chat message</span>
-          <div class="flex items-center gap-1 font-mono text-[11px]">
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Ctrl</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Enter</kbd>
-          </div>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Toggle live preview runtime</span>
-          <div class="flex items-center gap-1 font-mono text-[11px]">
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Ctrl</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">P</kbd>
-          </div>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Open version history</span>
-          <div class="flex items-center gap-1 font-mono text-[11px]">
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Ctrl</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-1.5 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Shift</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">H</kbd>
-          </div>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Create new file</span>
-          <div class="flex items-center gap-1 font-mono text-[11px]">
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Ctrl</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-1.5 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">Shift</kbd>
-            <span class="text-slate-500">+</span>
-            <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200">F</kbd>
-          </div>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Toggle shortcuts cheatsheet</span>
-          <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200 font-mono text-[11px]">?</kbd>
-        </div>
-        <div class="flex items-center justify-between py-1.5">
-          <span class="text-slate-300">Close modal / cancel</span>
-          <kbd class="px-2 py-0.5 bg-[#090d16] border border-white/20 rounded text-slate-200 font-mono text-[11px]">Esc</kbd>
-        </div>
-      </div>
-
-      <div class="pt-4 mt-2 border-t border-white/10 text-right">
-        <button onclick="closeShortcutsModal()" class="px-4 py-1.5 rounded-xl bg-white hover:bg-neutral-200 text-slate-950 font-bold text-xs transition">
-          Got it
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Global Animated Toast Notifications Container -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none select-none">
-    <!-- Toast items dynamically added by showToast() in app.js -->
-  </div>
-
-  <!-- Main Controller Script -->
-  <script src="app.js"></script>
-</body>
-</html>
+</body></html>
