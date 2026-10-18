@@ -43,6 +43,10 @@ app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Studio & Workspace Routes
+app.get('/workspace', (req, res) => res.sendFile(path.join(__dirname, '../public/workspace.html')));
+app.get('/studio', (req, res) => res.sendFile(path.join(__dirname, '../public/workspace.html')));
+
 // Cookie helper
 function setSessionCookie(res, token) {
   res.cookie('buildai_session', token, {

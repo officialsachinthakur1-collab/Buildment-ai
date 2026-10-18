@@ -1,0 +1,728 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- CodeMirror Syntax Highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+<style>
+@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}
+::-webkit-scrollbar{display:none;}
+.CodeMirror {
+  height: 100% !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 13px !important;
+  background: #0a0e17 !important;
+  color: #dfe2f0 !important;
+  line-height: 1.6 !important;
+}
+.CodeMirror-gutters {
+  background: #0f131d !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.CodeMirror-cursor {
+  border-left: 2px solid #38bdf8 !important;
+}
+</style>
+<script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#353943", "surface-container-low": "#171b25", "tertiary": "#6adbff", "tertiary-container": "#00c1ea", "on-primary": "#00354a", "error": "#ffb4ab", "surface-container-high": "#262a34", "on-tertiary": "#003543", "on-surface-variant": "#bdc8d1", "surface-container-lowest": "#0a0e17", "error-container": "#93000a", "on-tertiary-fixed-variant": "#004e60", "on-tertiary-fixed": "#001f28", "on-secondary-container": "#cdd7ff", "surface-variant": "#31353f", "tertiary-fixed-dim": "#47d6ff", "surface-tint": "#7bd0ff", "on-surface": "#dfe2f0", "primary-container": "#38bdf8", "surface-container": "#1c2029", "on-tertiary-container": "#004b5c", "outline-variant": "#3e484f", "on-primary-container": "#004965", "outline": "#87929a", "surface-dim": "#0f131d", "on-secondary-fixed-variant": "#003ea8", "tertiary-fixed": "#b6ebff", "on-primary-fixed-variant": "#004c69", "primary": "#8ed5ff", "on-secondary": "#002a78", "primary-fixed-dim": "#7bd0ff", "primary-fixed": "#c4e7ff", "on-secondary-fixed": "#00174b", "background": "#0f131d", "secondary": "#b4c5ff", "on-primary-fixed": "#001e2c", "on-background": "#dfe2f0", "surface": "#0f131d", "secondary-fixed": "#dbe1ff", "inverse-surface": "#dfe2f0", "secondary-container": "#0053db", "on-error": "#690005", "surface-container-highest": "#31353f", "secondary-fixed-dim": "#b4c5ff", "inverse-on-surface": "#2c303a", "on-error-container": "#ffdad6", "inverse-primary": "#00668a" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "gutter": "1.5rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "margin": "2.5rem", "space-xs": "0.25rem", "gutter-mobile": "1rem", "space-md": "1rem", "margin-mobile": "1rem", "space-xl": "2.5rem" }, "fontFamily": { "display-hero": ["Geist"], "label-sm": ["Geist"], "body-lg": ["Geist"], "label-md": ["Geist"], "body-md": ["Geist"], "headline-md": ["Geist"], "title-sm": ["Geist"], "headline-lg-mobile": ["Geist"], "display-hero-mobile": ["Geist"], "headline-lg": ["Geist"], "mono": ["JetBrains Mono"] }, "fontSize": { "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "title-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><a href="/" class="flex items-center gap-space-xs hover:opacity-90 transition"><span class="font-headline-md text-headline-md tracking-tight font-semibold text-on-surface">Buildment<span class="text-primary">.ai</span></span><span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm uppercase tracking-wider font-semibold">Studio</span></a><div class="flex items-center pl-space-sm gap-space-xs"><div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md"><span class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_#6adbff]"></span><span id="headerProjectName">yes-madam-app</span><span onclick="window.location.href='/'" class="material-symbols-outlined text-on-surface-variant text-[16px] cursor-pointer hover:text-on-surface" title="Close Project">close</span></div><button onclick="createNewProjectPrompt()" class="w-7 h-7 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" type="button" title="New Project"><span class="material-symbols-outlined text-[16px]">add</span></button></div></div><div class="flex items-center gap-space-xs"><nav class="flex items-center p-1 rounded-full bg-surface-container-lowest" id="viewModeNav"><button id="navTabPreview" onclick="switchViewMode('preview')" class="px-4 py-1.5 rounded-full transition-colors bg-primary-container text-on-primary-container font-semibold shadow-[0_0_12px_rgba(56,189,248,0.3)]">Preview</button><button id="navTabManage" onclick="switchViewMode('manage')" class="px-4 py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">Manage</button><button id="navTabCode" onclick="switchViewMode('code')" class="px-4 py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">Code</button></nav><button onclick="reloadPreview()" class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button" title="Refresh Live Simulator"><span class="material-symbols-outlined text-[18px]">refresh</span></button></div><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md cursor-pointer hover:bg-surface-container-highest transition"><span class="material-symbols-outlined text-primary text-[18px]">toll</span><span id="userCreditsValue" class="text-primary font-medium">1,450</span><span class="text-on-surface-variant">credits</span></div><button onclick="handleDeploy()" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold hover:bg-tertiary-container hover:text-on-tertiary-container shadow-[0_0_16px_rgba(56,189,248,0.25)] transition-all cursor-pointer" type="button"><span class="material-symbols-outlined text-[18px]">rocket_launch</span><span class="">Deploy</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_10px_rgba(142,213,255,0.3)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><div class=""><main class="relative pt-16 w-full min-h-screen bg-surface px-space-lg py-space-md"><div class="flex flex-col w-full h-[calc(100vh-5rem)]">
+<!-- Main 3-Column Workspace Frame -->
+<div class="grid grid-cols-12 gap-space-md w-full h-full min-h-0">
+<!-- LEFT COLUMN: AI Assistant & Terminal Stream (4 cols) -->
+<div class="col-span-12 flex flex-col h-full bg-surface-container-lowest rounded-DEFAULT p-space-md shadow-xl overflow-hidden relative xl:col-span-5"><!-- Glow ambient flare behind terminal -->
+<div class="absolute -top-12 -left-12 w-56 h-56 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+
+<!-- Header Section -->
+<div class="flex items-center justify-between pb-3 mb-2 border-b border-stone-800 shrink-0">
+  <div class="flex items-center gap-2.5">
+    <div class="relative flex items-center justify-center w-2.5 h-2.5">
+      <span class="absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75 animate-ping"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary shadow-[0_0_8px_#6adbff]"></span>
+    </div>
+    <span class="font-label-md text-label-md text-on-surface font-semibold tracking-tight">Agent Session</span>
+    
+  </div>
+  <div class="flex items-center gap-1 text-on-surface-variant">
+    <button onclick="toggleHistoryView()" class="w-7 h-7 rounded-full flex items-center justify-center hover:text-on-surface hover:bg-surface-container transition-colors" title="View history" type="button">
+      <span class="material-symbols-outlined text-[16px]">history</span>
+    </button>
+    <button onclick="showQuickOptions()" class="w-7 h-7 rounded-full flex items-center justify-center hover:text-on-surface hover:bg-surface-container transition-colors" title="More options" type="button">
+      <span class="material-symbols-outlined text-[16px]">more_vert</span>
+    </button>
+  </div>
+</div>
+
+<!-- Scrollable Message & Terminal Stream -->
+<div id="agentStreamContainer" class="flex-1 overflow-y-auto pr-1 space-y-3 min-h-0 selection:bg-primary-container/30">
+  <!-- Log Chip 1: Syntax checking -->
+  <div class="group bg-surface-container-low border border-stone-800 p-2.5 transition-all hover:border-outline-variant hover:bg-surface-container rounded-lg">
+    <div class="flex items-center justify-between gap-2 font-mono text-[12px]">
+      <div class="flex items-center gap-2 min-w-0 text-on-surface-variant">
+        <span class="text-primary font-bold shrink-0">&gt;_</span>
+        <span class="truncate text-on-surface">Syntax check <span class="text-on-surface-variant">/app/frontend...</span></span>
+      </div>
+      <span id="syntaxStatusBadge" class="px-2 py-0.5 rounded-full bg-emerald-400/10 text-emerald-400 font-medium text-[11px] shrink-0">passed</span>
+    </div>
+  </div>
+
+  <!-- Log Chip 2: Supervisor command -->
+  <div class="group bg-surface-container-low border border-stone-800 p-2.5 transition-all hover:border-outline-variant hover:bg-surface-container rounded-lg">
+    <div class="flex items-center justify-between gap-2 font-mono text-[12px]">
+      <div class="flex items-center gap-2 min-w-0 text-on-surface-variant">
+        <span class="text-tertiary font-bold shrink-0">$</span>
+        <span class="truncate text-on-surface">supervisorctl restart backend</span>
+      </div>
+      <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-medium text-[11px] shrink-0">0.4s</span>
+    </div>
+  </div>
+
+  <!-- Timestamp Divider -->
+  <div class="flex items-center gap-3 py-1">
+    <span class="h-px bg-stone-800 flex-1"></span>
+    <span id="sessionTimestampText" class="font-label-sm text-label-sm text-on-surface-variant/70 tracking-wider uppercase font-semibold text-[10px]">Oct 18 · Active Session</span>
+    <span class="h-px bg-stone-800 flex-1"></span>
+  </div>
+
+  <!-- Assistant Message Bubble -->
+  <div id="initialAgentMessageBubble" class="flex items-start gap-2.5">
+    <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_10px_rgba(56,189,248,0.35)] shrink-0 mt-0.5">
+      <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+    </div>
+    <div class="flex-1 bg-surface-container-high/80 border border-stone-800 p-3.5 shadow-md rounded-lg backdrop-blur-md">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#8ed5ff]"></span>
+          <span class="font-label-md text-label-md font-semibold text-white tracking-tight">Buildment Agent</span>
+        </div>
+        <span class="font-mono text-[11px] text-on-surface-variant/70">Online</span>
+      </div>
+      <p id="agentResponseText" class="font-body-md text-body-md text-on-surface leading-relaxed text-[13px] font-normal">
+        Ready to generate and synthesize your application. Describe changes below or click any feature to preview live code updates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Dynamic messages container -->
+  <div id="dynamicMessagesList" class="space-y-3"></div>
+
+  <!-- Agent Prompt Banner -->
+  <div onclick="document.getElementById('agentPromptInput').focus()" class="bg-surface-container-low border border-stone-800 p-3 flex items-center justify-between gap-3 group cursor-pointer hover:bg-surface-container hover:border-tertiary-container/40 transition-all rounded-lg">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="w-5 h-5 rounded-full bg-tertiary-container/20 text-tertiary flex items-center justify-center font-bold text-label-sm shrink-0">
+        <span class="material-symbols-outlined text-[13px]">help</span>
+      </div>
+      <div class="font-label-md text-label-md text-on-surface truncate">
+        <span class="font-semibold text-tertiary">Suggestion:</span> Add search filters, authentication, or custom branding
+      </div>
+    </div>
+    <span class="material-symbols-outlined text-on-surface-variant text-[16px] group-hover:text-tertiary group-hover:translate-x-0.5 transition-all shrink-0">chevron_right</span>
+  </div>
+</div>
+
+<!-- Bottom Chat & Command Input Dock -->
+<div class="pt-3 mt-auto shrink-0">
+  <div id="creditWarningBanner" class="hidden mb-3 bg-gradient-to-b from-amber-500/10 to-surface-container-low border border-amber-500/20 px-3.5 shadow-lg flex items-center justify-between gap-3 mx-3 py-2 rounded-lg">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="material-symbols-outlined text-[18px] text-amber-400 shrink-0">warning</span>
+      <span class="font-label-md text-label-md font-medium text-amber-400 truncate">Daily free quota limit reached.</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <button onclick="handleBuyCredits()" class="bg-amber-400 text-stone-950 font-label-md text-label-md font-semibold hover:bg-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.35)] transition-all flex items-center gap-1.5 rounded-lg py-1.5 px-3" type="button">
+        <span class="material-symbols-outlined text-[15px]">bolt</span>
+        <span class="">Upgrade Plan</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-surface-container-low/95 border border-stone-800/90 p-3 shadow-xl flex flex-col gap-3 focus-within:border-primary/50 focus-within:shadow-[0_0_16px_rgba(56,189,248,0.15)] transition-all backdrop-blur-md rounded-lg overflow-hidden">
+    <!-- Text Input Area -->
+    <div class="w-full flex items-start px-2 pt-1 min-h-[46px]">
+      <input id="agentPromptInput" class="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant/60 font-body-md text-body-md text-[14px] focus:outline-none leading-relaxed tracking-normal" placeholder="Ask Buildment Agent or describe what to build next..." type="text">
+    </div>
+    <!-- Bottom Control Bar -->
+    <div class="flex items-center justify-between pt-2 gap-2 border-t border-stone-800/80">
+      <!-- Left Controls & Selectors -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Attach Button -->
+        <button class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" type="button" title="Add attachment or context">
+          <span class="material-symbols-outlined text-[17px]">attach_file</span>
+        </button>
+        <!-- Model Switcher -->
+        <button id="modelSelectBtn" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high border border-stone-800/90 text-on-surface font-label-sm text-[12px] hover:bg-surface-container-highest hover:border-outline-variant transition-all shadow-sm" type="button">
+          <span class="text-tertiary text-[13px]">⚡</span>
+          <span id="selectedModelLabel" class="font-semibold">Gemini 2.5 Flash</span>
+          <span class="material-symbols-outlined text-[14px] text-on-surface-variant">expand_more</span>
+        </button>
+        <!-- Mode: Auto -->
+        <button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-stone-800 text-on-surface-variant hover:text-on-surface font-label-sm text-[12px] hover:bg-surface-container-high hover:border-outline-variant transition-all" type="button">
+          <span class="font-medium">Auto</span>
+          <span class="material-symbols-outlined text-[14px]">expand_more</span>
+        </button>
+        <!-- Mode: Build -->
+        <button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-stone-800 text-on-surface-variant hover:text-on-surface font-label-sm text-[12px] hover:bg-surface-container-high hover:border-outline-variant transition-all" type="button">
+          <span class="font-medium">Build</span>
+          <span class="material-symbols-outlined text-[14px]">expand_more</span>
+        </button>
+      </div>
+      <!-- Right Actions -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" type="button" title="Voice input">
+          <span class="material-symbols-outlined text-[18px]">mic</span>
+        </button>
+        <button id="agentSendBtn" onclick="handleSendAgentMessage()" class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_12px_rgba(56,189,248,0.35)] hover:bg-tertiary-container hover:shadow-[0_0_16px_rgba(0,193,234,0.45)] transition-all cursor-pointer" type="button" title="Send message">
+          <span class="material-symbols-outlined text-[18px] font-bold">arrow_upward</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- CENTER/RIGHT COLUMN: Interactive Smartphone Canvas OR Code Editor (7 cols) -->
+<div class="col-span-12 flex flex-col items-center justify-center h-full bg-surface-container-lowest/80 rounded-DEFAULT p-space-md shadow-2xl relative overflow-hidden xl:col-span-7">
+<!-- Subtle Matrix Dot Canvas Pattern -->
+<div class="absolute inset-0 opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#8ed5ff 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Atmospheric Ambient Glow behind Smartphone -->
+<div class="absolute w-80 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none -top-10"></div>
+<div class="absolute w-64 h-64 bg-tertiary-container/10 rounded-full blur-[80px] pointer-events-none -bottom-10"></div>
+
+<!-- Top Canvas Mini Toolbar -->
+<div class="absolute top-4 left-6 right-6 flex items-center justify-between pointer-events-auto z-20">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-md">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+<span id="canvasRuntimeStatus">Live Sandbox Operational</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high/80 backdrop-blur-md p-1 rounded-full shadow-md">
+<button onclick="toggleOrientation()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Rotate viewport" type="button">
+<span class="material-symbols-outlined text-[16px]">screen_rotation</span>
+</button>
+<button onclick="reloadPreview()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Restart Simulator" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+</button>
+<button onclick="toggleFullscreenSimulator()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Toggle Fullscreen" type="button">
+<span class="material-symbols-outlined text-[16px]">aspect_ratio</span>
+</button>
+</div>
+</div>
+
+<!-- VIEW 1: PREVIEW MODE (Smartphone / Device Canvas) -->
+<div id="canvasPreviewView" class="relative w-full h-full flex items-center justify-center pt-8">
+  <!-- Realistic Smartphone Mockup -->
+  <div id="smartphoneMockup" class="relative w-[340px] h-[670px] bg-stone-950 rounded-[48px] p-3 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_1px_2px_rgba(255,255,255,0.08)] flex flex-col shrink-0 select-none transition-all duration-300">
+    <!-- Physical Rim Reflections -->
+    <div class="absolute inset-0 rounded-[48px] pointer-events-none shadow-[inset_0_0_2px_1px_rgba(255,255,255,0.12)]"></div>
+    
+    <!-- Inner Bezel Screen Canvas -->
+    <div class="relative w-full h-full bg-surface-container-lowest rounded-[38px] overflow-hidden flex flex-col">
+      <!-- iPhone Status Bar & Dynamic Island -->
+      <div class="h-11 w-full px-6 flex items-center justify-between text-white shrink-0 z-30 pt-1.5 bg-black/40 backdrop-blur-sm">
+        <!-- Clock -->
+        <span class="font-label-sm text-label-sm font-semibold tracking-tight">9:41</span>
+        <!-- Dynamic Island Capsule -->
+        <div class="w-24 h-5 bg-black rounded-full flex items-center justify-end px-2 gap-1.5 shadow-inner">
+          <span class="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-800"></span>
+        </div>
+        <!-- Cellular, Wifi, Battery -->
+        <div class="flex items-center gap-1 text-[13px]">
+          <span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+          <span class="material-symbols-outlined text-[14px]">wifi</span>
+          <span class="material-symbols-outlined text-[15px]">battery_full</span>
+        </div>
+      </div>
+
+      <!-- Live Sandboxed Application Frame -->
+      <div class="relative flex-1 w-full h-full bg-surface overflow-hidden">
+        <iframe 
+          id="workspacePreviewIframe" 
+          sandbox="allow-scripts allow-forms allow-modals"
+          class="w-full h-full border-none bg-white"
+          src="about:blank"
+        ></iframe>
+      </div>
+
+      <!-- iOS Home Indicator bar -->
+      <div class="w-full h-5 flex items-center justify-center shrink-0 bg-black/80 pb-1">
+        <div class="w-32 h-1 bg-white/40 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 2: CODE MODE (Full-Feature CodeMirror Multi-File Editor) -->
+<div id="canvasCodeView" class="hidden w-full h-full flex flex-col pt-12 relative z-10">
+  <!-- Code Editor File Tabs -->
+  <div class="flex items-center justify-between bg-surface-container-low px-4 py-2 border-b border-stone-800 rounded-t-xl shrink-0">
+    <div id="editorFileTabsList" class="flex items-center gap-1.5 overflow-x-auto">
+      <button class="px-3 py-1 rounded-lg bg-surface-container-high text-primary font-mono text-xs flex items-center gap-1.5 border border-primary/30">
+        <span class="material-symbols-outlined text-[14px]">html</span>
+        <span>index.html</span>
+      </button>
+      <button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-mono text-xs flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[14px]">css</span>
+        <span>styles.css</span>
+      </button>
+      <button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-mono text-xs flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[14px]">javascript</span>
+        <span>app.js</span>
+      </button>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="saveActiveFileCode()" class="px-3 py-1 rounded-lg bg-primary hover:bg-tertiary text-on-primary font-label-md text-xs font-semibold flex items-center gap-1 shadow-sm transition">
+        <span class="material-symbols-outlined text-[14px]">save</span>
+        <span>Save & Recompile</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CodeMirror Container -->
+  <div class="flex-1 w-full bg-[#0a0e17] rounded-b-xl overflow-hidden border border-stone-800 border-t-0">
+    <textarea id="workspaceCodeEditor"></textarea>
+  </div>
+</div>
+
+<!-- VIEW 3: MANAGE / FILE ASSETS & VERSIONS MODE -->
+<div id="canvasManageView" class="hidden w-full h-full flex flex-col pt-12 relative z-10 p-6 overflow-y-auto">
+  <div class="max-w-3xl w-full mx-auto space-y-6">
+    <div class="flex items-center justify-between border-b border-stone-800 pb-3">
+      <div>
+        <h3 class="text-base font-bold text-white">Project File Assets</h3>
+        <p class="text-xs text-on-surface-variant">Manage and review your application's modular source files</p>
+      </div>
+      <button onclick="downloadZipArchive()" class="px-4 py-2 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-primary border border-primary/30 font-semibold text-xs flex items-center gap-1.5 shadow-sm transition">
+        <span class="material-symbols-outlined text-[16px]">folder_zip</span>
+        <span>Export ZIP Archive</span>
+      </button>
+    </div>
+    
+    <div id="manageFilesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <!-- Dynamically populated files -->
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- RIGHT COLUMN: Expo Go Mobile Testing & QR Code (3 cols) -->
+
+</div>
+</div></main></div>
+
+<script>
+// Workspace Controller Logic
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialPrompt = urlParams.get('prompt') || '';
+  const initialProjectId = urlParams.get('projectId') || '';
+
+  let currentProject = null;
+  let currentFiles = [];
+  let activeFile = 'index.html';
+  let cmInstance = null;
+  let isRotated = false;
+  let isFullscreen = false;
+
+  const headerProjectName = document.getElementById('headerProjectName');
+  const agentPromptInput = document.getElementById('agentPromptInput');
+  const agentSendBtn = document.getElementById('agentSendBtn');
+  const dynamicMessagesList = document.getElementById('dynamicMessagesList');
+  const iframe = document.getElementById('workspacePreviewIframe');
+  const userCreditsValue = document.getElementById('userCreditsValue');
+
+  // Initialize CodeMirror
+  const codeEditorEl = document.getElementById('workspaceCodeEditor');
+  if (codeEditorEl && window.CodeMirror) {
+    cmInstance = CodeMirror.fromTextArea(codeEditorEl, {
+      lineNumbers: true,
+      theme: 'dracula',
+      mode: 'htmlmixed',
+      indentUnit: 2,
+      tabSize: 2,
+      lineWrapping: true
+    });
+  }
+
+  // Load User Quota / Credits
+  async function loadQuota() {
+    try {
+      const res = await fetch('/api/user/quota');
+      const data = await res.json();
+      if (data.success && data.quota) {
+        if (userCreditsValue) {
+          const remaining = (data.quota.generationsLimit - data.quota.generationsUsed) * 100;
+          userCreditsValue.textContent = Math.max(0, remaining).toLocaleString();
+        }
+      }
+    } catch (e) {
+      console.warn('Quota load failed:', e);
+    }
+  }
+
+  // Initialize Project
+  async function initProject() {
+    await loadQuota();
+
+    if (initialPrompt) {
+      if (agentPromptInput) agentPromptInput.value = initialPrompt;
+      await createAndSynthesize(initialPrompt);
+    } else if (initialProjectId) {
+      await loadProjectById(initialProjectId);
+    } else {
+      // Create default starter project
+      await createDefaultProject();
+    }
+  }
+
+  async function createDefaultProject() {
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'yes-madam-app', prompt: 'Salon & beauty booking app' })
+      });
+      const data = await res.json();
+      if (data.success && data.project) {
+        currentProject = data.project;
+        if (headerProjectName) headerProjectName.textContent = currentProject.name;
+        await loadProjectFiles(currentProject.id);
+      }
+    } catch (e) {
+      console.error('Error creating default project:', e);
+    }
+  }
+
+  async function createAndSynthesize(prompt) {
+    try {
+      appendUserMessage(prompt);
+      appendAgentStatus('Synthesizing application architecture with AI...');
+
+      const projRes = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'custom-web-app', prompt })
+      });
+      const projData = await projRes.json();
+      if (!projData.success) throw new Error(projData.error);
+
+      currentProject = projData.project;
+      if (headerProjectName) headerProjectName.textContent = currentProject.name;
+
+      const genRes = await fetch(`/api/projects/${currentProject.id}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const genData = await genRes.json();
+      if (!genData.success) throw new Error(genData.error);
+
+      appendAgentMessage(`Generated ${genData.files ? genData.files.length : 3} files. Application compiled and running.`);
+      await loadProjectFiles(currentProject.id);
+      await loadQuota();
+    } catch (err) {
+      appendAgentMessage(`⚠️ Error: ${err.message}`);
+    }
+  }
+
+  async function loadProjectById(id) {
+    try {
+      const res = await fetch(`/api/projects/${id}`);
+      const data = await res.json();
+      if (data.success) {
+        currentProject = data.project;
+        currentFiles = data.files || [];
+        if (headerProjectName) headerProjectName.textContent = currentProject.name;
+        renderFilesList();
+        renderPreview();
+      }
+    } catch (e) {
+      console.error('Failed to load project:', e);
+    }
+  }
+
+  async function loadProjectFiles(id) {
+    try {
+      const res = await fetch(`/api/projects/${id}`);
+      const data = await res.json();
+      if (data.success) {
+        currentFiles = data.files || [];
+        renderFilesList();
+        renderPreview();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function renderPreview() {
+    if (!iframe || currentFiles.length === 0) return;
+    const htmlFile = currentFiles.find(f => f.path === 'index.html');
+    const cssFile = currentFiles.find(f => f.path === 'styles.css' || f.path === 'style.css');
+    const jsFile = currentFiles.find(f => f.path === 'app.js' || f.path === 'main.js');
+
+    let fullHtml = (htmlFile && htmlFile.content) || '<!DOCTYPE html><html><body><h1>Preview Ready</h1></body></html>';
+    if (cssFile && !fullHtml.includes(cssFile.content)) {
+      fullHtml = fullHtml.replace('</head>', `<style>${cssFile.content}</style></head>`);
+    }
+    if (jsFile && !fullHtml.includes(jsFile.content)) {
+      fullHtml = fullHtml.replace('</body>', `<script>${jsFile.content}<\/script></body>`);
+    }
+
+    iframe.srcdoc = fullHtml;
+  }
+
+  function renderFilesList() {
+    const tabsList = document.getElementById('editorFileTabsList');
+    const manageGrid = document.getElementById('manageFilesGrid');
+    if (!tabsList) return;
+
+    tabsList.innerHTML = currentFiles.map(f => `
+      <button onclick="selectEditorFile('${f.path}')" class="px-3 py-1 rounded-lg font-mono text-xs flex items-center gap-1.5 transition ${f.path === activeFile ? 'bg-surface-container-high text-primary border border-primary/30' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}">
+        <span class="material-symbols-outlined text-[14px]">${f.path.endsWith('.html') ? 'html' : f.path.endsWith('.css') ? 'css' : 'javascript'}</span>
+        <span>${f.path}</span>
+      </button>
+    `).join('');
+
+    if (manageGrid) {
+      manageGrid.innerHTML = currentFiles.map(f => `
+        <div class="bg-surface-container-low border border-stone-800 p-3 rounded-lg flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[18px]">description</span>
+            <span class="font-mono text-xs text-white">${f.path}</span>
+          </div>
+          <span class="text-[11px] text-on-surface-variant">${(f.content || '').length} bytes</span>
+        </div>
+      `).join('');
+    }
+
+    const cur = currentFiles.find(f => f.path === activeFile);
+    if (cur && cmInstance) {
+      cmInstance.setValue(cur.content || '');
+    }
+  }
+
+  window.selectEditorFile = function(path) {
+    activeFile = path;
+    const f = currentFiles.find(file => file.path === path);
+    if (f && cmInstance) {
+      cmInstance.setValue(f.content || '');
+      const mode = path.endsWith('.html') ? 'htmlmixed' : path.endsWith('.css') ? 'css' : 'javascript';
+      cmInstance.setOption('mode', mode);
+    }
+    renderFilesList();
+  };
+
+  window.saveActiveFileCode = async function() {
+    if (!currentProject || !cmInstance) return;
+    const content = cmInstance.getValue();
+    try {
+      const res = await fetch(`/api/projects/${currentProject.id}/files`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: activeFile, content })
+      });
+      const data = await res.json();
+      if (data.success) {
+        const fileObj = currentFiles.find(f => f.path === activeFile);
+        if (fileObj) fileObj.content = content;
+        renderPreview();
+        appendAgentStatus(`Saved & recompiled ${activeFile}`);
+      }
+    } catch (e) {
+      alert('Save failed: ' + e.message);
+    }
+  };
+
+  function appendUserMessage(text) {
+    if (!dynamicMessagesList) return;
+    const div = document.createElement('div');
+    div.className = 'flex justify-end';
+    div.innerHTML = `
+      <div class="bg-primary-container text-on-primary-container px-3.5 py-2.5 rounded-lg text-[13px] font-medium max-w-[85%] shadow-md">
+        ${escapeHtml(text)}
+      </div>
+    `;
+    dynamicMessagesList.appendChild(div);
+    div.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function appendAgentMessage(text) {
+    if (!dynamicMessagesList) return;
+    const div = document.createElement('div');
+    div.className = 'flex items-start gap-2.5';
+    div.innerHTML = `
+      <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_10px_rgba(56,189,248,0.35)] shrink-0 mt-0.5">
+        <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+      </div>
+      <div class="flex-1 bg-surface-container-high/80 border border-stone-800 p-3.5 shadow-md rounded-lg backdrop-blur-md">
+        <div class="flex items-center gap-1.5 mb-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#8ed5ff]"></span>
+          <span class="font-label-md text-label-md font-semibold text-white tracking-tight">Buildment Agent</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface leading-relaxed text-[13px] font-normal">
+          ${escapeHtml(text)}
+        </p>
+      </div>
+    `;
+    dynamicMessagesList.appendChild(div);
+    div.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function appendAgentStatus(text) {
+    if (!dynamicMessagesList) return;
+    const div = document.createElement('div');
+    div.className = 'group bg-surface-container-low border border-stone-800 p-2.5 transition-all rounded-lg';
+    div.innerHTML = `
+      <div class="flex items-center gap-2 font-mono text-[12px] text-on-surface">
+        <span class="text-primary font-bold">&gt;_</span>
+        <span>${escapeHtml(text)}</span>
+      </div>
+    `;
+    dynamicMessagesList.appendChild(div);
+    div.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  window.handleSendAgentMessage = async function() {
+    const text = agentPromptInput ? agentPromptInput.value.trim() : '';
+    if (!text) return;
+    agentPromptInput.value = '';
+
+    if (!currentProject) {
+      await createAndSynthesize(text);
+      return;
+    }
+
+    appendUserMessage(text);
+    appendAgentStatus('Analyzing prompt and modifying application...');
+
+    try {
+      const res = await fetch(`/api/projects/${currentProject.id}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: text })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        if (res.status === 429) {
+          document.getElementById('creditWarningBanner')?.classList.remove('hidden');
+        }
+        throw new Error(data.error);
+      }
+      appendAgentMessage('Application updated successfully with your requested changes.');
+      await loadProjectFiles(currentProject.id);
+      await loadQuota();
+    } catch (e) {
+      appendAgentMessage(`⚠️ ${e.message}`);
+    }
+  };
+
+  if (agentPromptInput) {
+    agentPromptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSendAgentMessage();
+      }
+    });
+  }
+
+  window.switchViewMode = function(mode) {
+    const pView = document.getElementById('canvasPreviewView');
+    const cView = document.getElementById('canvasCodeView');
+    const mView = document.getElementById('canvasManageView');
+
+    const tabP = document.getElementById('navTabPreview');
+    const tabM = document.getElementById('navTabManage');
+    const tabC = document.getElementById('navTabCode');
+
+    [pView, cView, mView].forEach(v => v?.classList.add('hidden'));
+    [tabP, tabM, tabC].forEach(t => {
+      if (t) t.className = 'px-4 py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors';
+    });
+
+    const activeClasses = 'px-4 py-1.5 rounded-full transition-colors bg-primary-container text-on-primary-container font-semibold shadow-[0_0_12px_rgba(56,189,248,0.3)]';
+
+    if (mode === 'preview') {
+      pView?.classList.remove('hidden');
+      if (tabP) tabP.className = activeClasses;
+      renderPreview();
+    } else if (mode === 'code') {
+      cView?.classList.remove('hidden');
+      if (tabC) tabC.className = activeClasses;
+      if (cmInstance) setTimeout(() => cmInstance.refresh(), 50);
+    } else if (mode === 'manage') {
+      mView?.classList.remove('hidden');
+      if (tabM) tabM.className = activeClasses;
+    }
+  };
+
+  window.toggleOrientation = function() {
+    const mockup = document.getElementById('smartphoneMockup');
+    if (!mockup) return;
+    isRotated = !isRotated;
+    if (isRotated) {
+      mockup.style.width = '670px';
+      mockup.style.height = '360px';
+    } else {
+      mockup.style.width = '340px';
+      mockup.style.height = '670px';
+    }
+  };
+
+  window.toggleFullscreenSimulator = function() {
+    const mockup = document.getElementById('smartphoneMockup');
+    if (!mockup) return;
+    isFullscreen = !isFullscreen;
+    if (isFullscreen) {
+      mockup.style.width = '100%';
+      mockup.style.height = '100%';
+      mockup.style.borderRadius = '16px';
+    } else {
+      mockup.style.width = '340px';
+      mockup.style.height = '670px';
+      mockup.style.borderRadius = '48px';
+    }
+  };
+
+  window.reloadPreview = function() {
+    renderPreview();
+  };
+
+  window.handleDeploy = function() {
+    if (!currentProject) {
+      alert('Please create or select a project first.');
+      return;
+    }
+    window.location.href = `/api/projects/${currentProject.id}/export`;
+  };
+
+  window.downloadZipArchive = function() {
+    handleDeploy();
+  };
+
+  window.createNewProjectPrompt = function() {
+    const name = prompt('Enter new project name:');
+    if (!name) return;
+    fetch('/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name })
+    }).then(r => r.json()).then(data => {
+      if (data.success && data.project) {
+        window.location.href = `/workspace.html?projectId=${data.project.id}`;
+      }
+    });
+  };
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Run initialization
+  initProject();
+})();
+</script>
+</body></html>
