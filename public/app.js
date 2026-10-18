@@ -25,8 +25,10 @@ let runtimePollTimer = null;
 // -------------------------------------------------------------
 // DOM Elements
 // -------------------------------------------------------------
+const landingView = document.getElementById('landingView');
 const dashboardView = document.getElementById('dashboardView');
 const workspaceView = document.getElementById('workspaceView');
+let cachedProjectsList = [];
 
 const sidebarProjectCount = document.getElementById('sidebarProjectCount');
 const sidebarProjectList = document.getElementById('sidebarProjectList');
@@ -388,6 +390,7 @@ async function loadProjects() {
     if (!data.success) throw new Error(data.error);
 
     const projects = data.projects || [];
+    cachedProjectsList = projects;
     sidebarProjectCount.textContent = projects.length;
 
     renderSidebarProjects(projects);
@@ -554,9 +557,127 @@ function exitWorkspaceToDashboard() {
   appState.activeFilePath = null;
 
   workspaceView.classList.add('hidden');
+  if (landingView) landingView.classList.add('hidden');
   dashboardView.classList.remove('hidden');
 
   loadProjects();
+}
+
+// -------------------------------------------------------------
+// Top-Level View Navigation (Landing vs Dashboard)
+// -------------------------------------------------------------
+function showLandingView() {
+  if (landingView) landingView.classList.remove('hidden');
+  dashboardView.classList.add('hidden');
+  workspaceView.classList.add('hidden');
+  appState.currentView = 'landing';
+}
+
+function showDashboardView() {
+  if (landingView) landingView.classList.add('hidden');
+  dashboardView.classList.remove('hidden');
+  workspaceView.classList.add('hidden');
+  appState.currentView = 'dashboard';
+  loadProjects();
+}
+
+function handleLandingPromptSubmit() {
+  const input = document.getElementById('landingPromptInput');
+  const val = input ? input.value.trim() : '';
+  if (!val) {
+    showDashboardView();
+    return;
+  }
+  showDashboardView();
+  if (heroPromptInput) {
+    heroPromptInput.value = val;
+    heroPromptInput.scrollIntoView({ behavior: 'smooth' });
+    heroPromptInput.focus();
+  }
+}
+
+function setLandingPrompt(text) {
+  const input = document.getElementById('landingPromptInput');
+  if (input) {
+    input.value = text;
+    input.focus();
+  }
+}
+
+function setHeroPrompt(promptText, projectName) {
+  if (heroPromptInput) heroPromptInput.value = promptText;
+  if (heroProjectName && projectName) heroProjectName.value = projectName;
+  if (heroPromptInput) heroPromptInput.focus();
+}
+
+async function launchTemplateFromLanding(templateId) {
+  showDashboardView();
+  await launchTemplateProject(templateId);
+}
+
+function handleSearchProjects(event) {
+  const query = (event.target.value || '').toLowerCase().trim();
+  if (!query) {
+    renderProjectsGrid(cachedProjectsList);
+    return;
+  }
+  const filtered = cachedProjectsList.filter(p => 
+    (p.name && p.name.toLowerCase().includes(query)) ||
+    (p.prompt && p.prompt.toLowerCase().includes(query))
+  );
+  renderProjectsGrid(filtered);
+}
+
+function toggleFileTreeDrawer() {
+  const drawer = document.getElementById('wsExplorerDrawer');
+  const btnText = document.getElementById('fileTreeBtnText');
+  if (!drawer) return;
+  const isHidden = drawer.classList.contains('hidden');
+  if (isHidden) {
+    drawer.classList.remove('hidden');
+    if (btnText) btnText.textContent = 'Hide Files';
+  } else {
+    drawer.classList.add('hidden');
+    if (btnText) btnText.textContent = 'Files';
+  }
+}
+
+function insertPromptChip(text) {
+  if (!wsChatInput) return;
+  if (wsChatInput.value.trim()) {
+    wsChatInput.value += ' ' + text;
+  } else {
+    wsChatInput.value = text;
+  }
+  wsChatInput.focus();
+}
+
+function refreshPreviewIframe() {
+  if (wsPreviewIframe) {
+    const src = wsPreviewIframe.src;
+    wsPreviewIframe.src = '';
+    setTimeout(() => { wsPreviewIframe.src = src; }, 50);
+    showToast('Reloaded', 'Refreshed sandboxed preview', 'info', 1500);
+  }
+}
+
+function openSettingsModal() {
+  const modal = document.getElementById('settingsModal');
+  if (!modal) return;
+  const usernameEl = document.getElementById('settingsUsername');
+  const planEl = document.getElementById('settingsPlan');
+  if (usernameEl && appState.currentUser) {
+    usernameEl.textContent = appState.currentUser.username || 'Developer';
+  }
+  if (planEl) {
+    planEl.textContent = (appState.currentUser && appState.currentUser.plan) || 'Free Tier';
+  }
+  modal.classList.remove('hidden');
+}
+
+function closeSettingsModal() {
+  const modal = document.getElementById('settingsModal');
+  if (modal) modal.classList.add('hidden');
 }
 
 function updateFileCountBadge() {
@@ -1106,25 +1227,30 @@ function setPreviewViewport(mode) {
   const tabBtn = document.getElementById('vpTabBtn');
   const mobBtn = document.getElementById('vpMobBtn');
 
-  deskBtn.className = 'p-1 px-2 rounded font-semibold text-neutral-400 hover:text-white transition';
-  tabBtn.className = 'p-1 px-2 rounded font-semibold text-neutral-400 hover:text-white transition';
-  mobBtn.className = 'p-1 px-2 rounded font-semibold text-neutral-400 hover:text-white transition';
+  if (deskBtn) deskBtn.className = 'p-1 px-2.5 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1 transition';
+  if (tabBtn) tabBtn.className = 'p-1 px-2.5 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1 transition';
+  if (mobBtn) mobBtn.className = 'p-1 px-2.5 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1 transition';
+
+  wsPreviewIframe.className = 'bg-white shadow-2xl transition-all duration-300';
 
   if (mode === 'desktop') {
-    deskBtn.className = 'p-1 px-2 rounded font-semibold bg-white/15 text-white';
+    if (deskBtn) deskBtn.className = 'p-1 px-2.5 rounded font-semibold bg-white/15 text-white flex items-center gap-1';
+    wsPreviewIframe.classList.add('viewport-desktop');
     wsPreviewIframe.style.width = '100%';
     wsPreviewIframe.style.height = '100%';
     wsPreviewIframe.style.borderRadius = '0px';
   } else if (mode === 'tablet') {
-    tabBtn.className = 'p-1 px-2 rounded font-semibold bg-white/15 text-white';
+    if (tabBtn) tabBtn.className = 'p-1 px-2.5 rounded font-semibold bg-white/15 text-white flex items-center gap-1';
+    wsPreviewIframe.classList.add('viewport-tablet');
     wsPreviewIframe.style.width = '768px';
-    wsPreviewIframe.style.height = '100%';
-    wsPreviewIframe.style.borderRadius = '16px';
+    wsPreviewIframe.style.height = '90%';
+    wsPreviewIframe.style.borderRadius = '24px';
   } else if (mode === 'mobile') {
-    mobBtn.className = 'p-1 px-2 rounded font-semibold bg-white/15 text-white';
+    if (mobBtn) mobBtn.className = 'p-1 px-2.5 rounded font-semibold bg-white/15 text-white flex items-center gap-1';
+    wsPreviewIframe.classList.add('viewport-mobile');
     wsPreviewIframe.style.width = '375px';
     wsPreviewIframe.style.height = '667px';
-    wsPreviewIframe.style.borderRadius = '24px';
+    wsPreviewIframe.style.borderRadius = '36px';
   }
 }
 
@@ -1134,13 +1260,18 @@ function setPreviewViewport(mode) {
 function switchWorkspaceRightTab(tab) {
   appState.rightTab = tab;
 
+  const tabEditorBtn = document.getElementById('tabEditorBtn');
+  const editorContainer = document.getElementById('editorContainer');
+
   // Reset tab button styles
-  tabPreviewBtn.className = 'px-2.5 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition';
-  tabConsoleBtn.className = 'px-2.5 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition';
-  if (tabDebuggerBtn) tabDebuggerBtn.className = 'px-2.5 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition relative';
+  tabPreviewBtn.className = 'px-3 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition';
+  if (tabEditorBtn) tabEditorBtn.className = 'px-3 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition';
+  tabConsoleBtn.className = 'px-3 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition';
+  if (tabDebuggerBtn) tabDebuggerBtn.className = 'px-3 py-1 rounded font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 transition relative';
 
   // Hide all right sub-views and toolbar controls
   previewFrameContainer.classList.add('hidden');
+  if (editorContainer) editorContainer.classList.add('hidden');
   runtimeConsoleContainer.classList.add('hidden');
   if (runtimeDebuggerContainer) runtimeDebuggerContainer.classList.add('hidden');
   previewViewportControls.classList.add('hidden');
@@ -1148,16 +1279,22 @@ function switchWorkspaceRightTab(tab) {
   if (debuggerActionControls) debuggerActionControls.classList.add('hidden');
 
   if (tab === 'preview') {
-    tabPreviewBtn.className = 'px-2.5 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition';
+    tabPreviewBtn.className = 'px-3 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition';
     previewFrameContainer.classList.remove('hidden');
     previewViewportControls.classList.remove('hidden');
+  } else if (tab === 'editor') {
+    if (tabEditorBtn) tabEditorBtn.className = 'px-3 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition';
+    if (editorContainer) editorContainer.classList.remove('hidden');
+    if (cmEditorInstance) {
+      setTimeout(() => cmEditorInstance.refresh(), 50);
+    }
   } else if (tab === 'console') {
-    tabConsoleBtn.className = 'px-2.5 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition';
+    tabConsoleBtn.className = 'px-3 py-1 rounded font-semibold bg-white/15 text-white flex items-center gap-1.5 transition';
     runtimeConsoleContainer.classList.remove('hidden');
     consoleActionControls.classList.remove('hidden');
     fetchRuntimeLogs();
   } else if (tab === 'debugger') {
-    if (tabDebuggerBtn) tabDebuggerBtn.className = 'px-2.5 py-1 rounded font-semibold bg-white/15 text-amber-300 flex items-center gap-1.5 transition relative';
+    if (tabDebuggerBtn) tabDebuggerBtn.className = 'px-3 py-1 rounded font-semibold bg-white/15 text-amber-300 flex items-center gap-1.5 transition relative';
     if (runtimeDebuggerContainer) runtimeDebuggerContainer.classList.remove('hidden');
     if (debuggerActionControls) debuggerActionControls.classList.remove('hidden');
     fetchDiagnostics();
@@ -2845,6 +2982,7 @@ function closeAllModals() {
   closeNewProjectModal();
   closeNewFileModal();
   closeAuthModal();
+  closeSettingsModal();
   if (typeof closePlanUpgradeModal === 'function') closePlanUpgradeModal();
 }
 
